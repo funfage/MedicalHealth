@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/medical-health?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password: TXyunMsq@rt031219..
+    password: root
     #注入数据源的类型   默认的为HikariDataSource
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
