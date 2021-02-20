@@ -64,6 +64,7 @@ export const asyncRoutes = [
       title: '系统管理',
       icon: 'lock'
     },
+    // 配置子路由
     children: [
       {
         path: 'dept',
@@ -103,7 +104,7 @@ export const asyncRoutes = [
       },
       {
         path: 'dict',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/system/dict/type'), // 懒加载type组件
         name: '/system/dict',
         meta: {
           title: '字典管理',
@@ -370,10 +371,10 @@ export const lastRoute = [
     hidden: true,
     children: [
       {
-        path: 'type/data/:dictId(\\d+)',
-        component: () => import('@/views/error-page/404'),
+        path: 'data/:dictId(\\d+)',
+        component: () => import('@/views/system/dict/data'),
         name: '/dict',
-        meta: { title: '数据字典' }
+        meta: { title: '数据字典', icon: 'list' }
       }
     ]
   },

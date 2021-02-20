@@ -26,13 +26,10 @@ router.beforeEach(async(to, from, next) => {
     } else {
       // 确定用户是否已通过getInfo获得其用户
       const hasName = store.getters.name !== ''
-      console.log(store.getters.name)
-      console.log(hasName)
       if (hasName) {
         next()
       } else {
         try {
-          console.log('ok')
           // 如果没有得到权限则再去请求后台得到用户信息及权限信息
           await store.dispatch('user/getInfo')
           // 绑定动态路由【后面我们要修改】

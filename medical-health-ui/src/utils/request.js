@@ -45,6 +45,11 @@ service.interceptors.response.use(
         title: '服务器内部出现异常，请联系管理员'
       })
       return Promise.reject('error')// 记录错
+    } else if (res.code === 400) {
+      Notification.error({
+        title: res.msg
+      })
+      return Promise.reject('error')// 记录错
     } else if (res.code !== 200) { // 可能是其它参数出错
       Notification.error({
         title: res.msg
