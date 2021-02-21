@@ -224,6 +224,7 @@ export default {
     /* 查询条件相关方法 */
     // 条件查询
     handleQuery() {
+      this.queryParams.pageNum = 1
       this.getDictDataList()
     },
     // 重置查询条件

@@ -1,5 +1,7 @@
 package com.zrf.controller.system;
 
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.dto.DictTypeDto;
 import com.zrf.service.DictTypeService;
 import com.zrf.utils.ShiroSecurityUtils;
@@ -40,6 +42,7 @@ public class DictTypeController {
      * @return
      */
     @PostMapping("addDictType")
+    @Log(title = "添加字典类型", businessType = BusinessType.INSERT)
     public AjaxResult addDictType(@Validated DictTypeDto dictTypeDto) {
         // 判断添加的dictType是否唯一
         if (dictTypeService.checkDictTypeUnique(dictTypeDto.getDictId(), dictTypeDto.getDictType())) {
@@ -56,6 +59,7 @@ public class DictTypeController {
      * @return
      */
     @PutMapping("updateDictType")
+    @Log(title = "修改字典类型",businessType = BusinessType.UPDATE)
     public AjaxResult updateDictType(@Validated DictTypeDto dictTypeDto) {
         // 判断添加的dictType是否唯一
         if (dictTypeService.checkDictTypeUnique(dictTypeDto.getDictId(), dictTypeDto.getDictType())) {
@@ -79,6 +83,7 @@ public class DictTypeController {
      * 删除
      */
     @DeleteMapping("deleteDictTypeByIds/{dictIds}")
+    @Log(title = "删除字典类型", businessType = BusinessType.DELETE)
     public AjaxResult updateDictType(@PathVariable @Validated @NotEmpty(message = "要删除的ID不能为空") Long[] dictIds) {
         return AjaxResult.toAjax(dictTypeService.deleteDictTypeByIds(dictIds));
     }
@@ -95,6 +100,7 @@ public class DictTypeController {
      * 同步缓存
      */
     @GetMapping("dictCacheAsync")
+    @Log(title = "字典类型同步缓存到redis", businessType = BusinessType.OTHER)
     public AjaxResult dictCacheAsync(){
         try {
             dictTypeService.dictCacheAsync();

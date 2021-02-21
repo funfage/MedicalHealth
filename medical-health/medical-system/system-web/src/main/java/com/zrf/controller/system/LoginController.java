@@ -1,5 +1,7 @@
 package com.zrf.controller.system;
 
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.constants.Constants;
 import com.zrf.constants.HttpStatus;
 import com.zrf.domain.Menu;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
@@ -46,6 +47,7 @@ public class LoginController {
      * @return
      */
     @PostMapping("login/doLogin")
+    @Log(title = "用户登录", businessType = BusinessType.OTHER)
     public AjaxResult login(@RequestBody @Validated LoginBodyDto loginBodyDto, HttpServletRequest request) {
         AjaxResult result = AjaxResult.success();
         String username = loginBodyDto.getUsername();

@@ -1,5 +1,7 @@
 package com.zrf.controller.system;
 
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.dto.DictDataDto;
 import com.zrf.service.DictDataService;
 import com.zrf.utils.ShiroSecurityUtils;
@@ -38,6 +40,7 @@ public class DictDataController {
      * 添加
      */
     @PostMapping("addDictData")
+    @Log(title = "添加字典数据", businessType = BusinessType.INSERT)
     public AjaxResult addDictData(@Validated DictDataDto dictDataDto) {
         dictDataDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(dictDataService.insert(dictDataDto));
@@ -47,6 +50,7 @@ public class DictDataController {
      * 修改
      */
     @PutMapping("updateDictData")
+    @Log(title = "修改字典数据", businessType = BusinessType.UPDATE)
     public AjaxResult updateDictData(@Validated DictDataDto dictDataDto) {
         dictDataDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(dictDataService.update(dictDataDto));
@@ -65,6 +69,7 @@ public class DictDataController {
      * 删除
      */
     @DeleteMapping("deleteDictDataByIds/{dictCodeIds}")
+    @Log(title = "删除字典数据", businessType = BusinessType.DELETE)
     public AjaxResult updateDictData(@PathVariable @Validated @NotEmpty(message = "要删除的ID不能为空") Long[] dictCodeIds) {
         return AjaxResult.toAjax(dictDataService.deleteDictDataByIds(dictCodeIds));
     }
