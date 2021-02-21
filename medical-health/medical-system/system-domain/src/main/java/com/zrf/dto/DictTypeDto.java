@@ -1,6 +1,5 @@
 package com.zrf.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,7 @@ import java.util.Date;
  * @author 张润发
  * @date 2021/2/19
  */
-@ApiModel(value="com-zrf-domain-DictType")
+@ApiModel(value="com-zrf-domain-DictTypeDto")
 @Data
 @EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor
