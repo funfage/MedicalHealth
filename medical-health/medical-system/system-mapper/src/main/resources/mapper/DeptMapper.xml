@@ -23,4 +23,5 @@
     dept_id, dept_name, reg_number, dept_number, order_num, dept_leader, leader_phone, 
     `status`, del_flag, create_time, update_time, create_by, update_by
   </sql>
+
 </mapper>

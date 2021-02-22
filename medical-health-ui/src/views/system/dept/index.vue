@@ -2,21 +2,10 @@
   <div class="app-container">
     <!-- 查询条件开始 -->
     <el-form ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
-      <el-form-item label="字典名称" prop="dictName">
+      <el-form-item label="科室名称" prop="deptName">
         <el-input
-          v-model="queryParams.dictName"
-          type="text"
-          placeholder="请输入字典名称"
-          clearable
-          size="small"
-          style="width:240px"
-        />
-      </el-form-item>
-      <el-form-item label="字典类型" prop="dictType">
-        <el-input
-          v-model="queryParams.dictType"
-          type="text"
-          placeholder="请输入字典名称"
+          v-model="queryParams.deptName"
+          placeholder="请输入科室名称"
           clearable
           size="small"
           style="width:240px"
@@ -25,7 +14,7 @@
       <el-form-item label="状态" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="字典状态"
+          placeholder="可用状态"
           clearable
           size="small"
           style="width:240px"
@@ -38,20 +27,18 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item>
+      <el-form-item label="创建时间">
         <el-date-picker
           v-model="dateRange"
-          clearable
           size="small"
           style="width:240px"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          start-placeholde="开始日期"
+          end-placeholde="结束日期"
         />
       </el-form-item>
-
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button type="primary" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -70,27 +57,21 @@
       <el-col :span="1.5">
         <el-button type="danger" icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">删除</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button type="warning" icon="el-icon-refresh" size="mini" @click="handleCacheAsync">缓存同步</el-button>
-      </el-col>
     </el-row>
     <!-- 表格工具按钮结束 -->
 
     <!-- 数据表格开始 -->
-    <el-table v-loading="loading" border :data="dictTypeTableList" @selection-change="handleSelectionChnage">
+    <el-table v-loading="loading" border :data="deptTableList" @selection-change="handleSelectionChnage">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="字典编号" prop="dictId" align="center" />
-      <el-table-column label="字典名称" prop="dictName" align="center" :show-overflow-tooltip="true" />
-      <el-table-column label="字典类型" prop="dictType" align="center" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <router-link :to="'/dict/data/' + scope.row.dictId" class="link-type">
-            <span>{{ scope.row.dictType }}</span>
-          </router-link>
-        </template>
-      </el-table-column>
+      <el-table-column label="科室ID" align="center" prop="deptId" />
+      <el-table-column label="科室名称" align="center" prop="deptName" />
+      <el-table-column label="科室编码" align="center" prop="deptNumber" />
+      <el-table-column label="当前挂号量" align="center" prop="regNumber" />
+      <el-table-column label="排序码" align="center" prop="orderNum" />
+      <el-table-column label="负责人" align="center" prop="deptLeader" />
+      <el-table-column label="电话" align="center" prop="leaderPhone" />
       <el-table-column label="状态" prop="status" align="center" :formatter="statusFormatter" />
-      <el-table-column label="备注" prop="remark" align="center" :show-overflow-tooltip="true" />
-      <el-table-column label="创建时间" prop="createTime" align="center" width="180" />
+      <el-table-column label="创建时间" align="center" prop="createTime" />
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="text" icon="el-icon-edit" size="mini" @click="handleUpdate(scope.row)">修改</el-button>
@@ -114,18 +95,30 @@
 
     <!-- 添加修改弹出层开始 -->
     <el-dialog
-      title="title"
+      :title="title"
       :visible.sync="open"
       width="500px"
       center
       append-to-body
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="字典名称" prop="dictName">
-          <el-input v-model="form.dictName" placeholder="请输入字典名称" clearable size="small" />
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+        <el-form-item label="科室名称" prop="deptName">
+          <el-input v-model="form.deptName" placeholder="请输入科室名称" clearable size="small" />
         </el-form-item>
-        <el-form-item label="字典类型" prop="dictType">
-          <el-input v-model="form.dictType" placeholder="请输入字典类型" clearable size="small" />
+        <el-form-item label="科室编码" prop="deptNumber">
+          <el-input v-model="form.deptNumber" placeholder="请输入科室编码" clearable size="small" />
+        </el-form-item>
+        <el-form-item label="挂号开始编号" prop="regNumber">
+          <el-input-number v-model="form.regNumber" placeholder="请输入挂号开始编号" clearable size="small" />
+        </el-form-item>
+        <el-form-item label="负责人" prop="deptLeader">
+          <el-input v-model="form.deptLeader" placeholder="请输入负责人" clearable size="small" />
+        </el-form-item>
+        <el-form-item label="电话" prop="leaderPhone">
+          <el-input v-model="form.leaderPhone" placeholder="请输入负责人电话" clearable size="small" />
+        </el-form-item>
+        <el-form-item label="排序码" prop="orderNum">
+          <el-input-number v-model="form.orderNum" clearable size="small" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
@@ -137,24 +130,21 @@
             >{{ dict.dictLabel }}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入字典备注" clearable size="small" />
-        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="handleSubmit('form')">确 定</el-button>
+        <el-button type="primary" @click="handleSubmit">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </span>
-      <!-- 添加修改弹出层结束 -->
-    </el-dialog></div>
+    </el-dialog>
+    <!-- 添加修改弹出层结束 -->
+  </div>
 </template>
 
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-// 引入type的api
-import { listForPage, addDictType, updateDictType, getDictTypeById, deleteDictTypeByIds, dictCacheAsync } from '@/api/system/dict/type'
-
+// 引入api
+import { listDeptForPage, addDept, updateDept, getDeptById, deleteDeptByIds } from '@/api/system/dept'
 export default {
   data() {
     // 这里存放数据
@@ -170,7 +160,7 @@ export default {
       // 分页数据总条数
       total: 0,
       // 字典表格数据
-      dictTypeTableList: [],
+      deptTableList: [],
       // 弹出层标题
       title: '',
       // 是否显示弹出层
@@ -183,185 +173,151 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        dictName: undefined,
-        dictType: undefined,
+        deptName: undefined,
         status: undefined
       },
       // 表单数据
       form: {},
       // 表单校验
       rules: {
-        dictName: [
-          { required: true, message: '字典名称不能为空', trigger: 'blur' }
+        deptName: [
+          { required: true, message: '科室名称不能为空', trigger: 'blur' }
         ],
-        dictType: [
-          { required: true, message: '字典类型不能为空', trigger: 'blur' }
+        deptNumber: [
+          { required: true, message: '科室编码不能为空', trigger: 'blur' }
         ]
       }
     }
   },
-  // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    // 查询表格数据
-    this.getDictTypeList()
-    // 使用全局的数据字典类型查询数据字典数据的方法
+    // 使用全局的根据字典类型查询字典数据的方法查询字典数据
     this.getDataByType('sys_normal_disable').then(res => {
       this.statusOptions = res.data
     })
+    // 查询表格数据
+    this.getDeptList()
   },
   // 方法集合
   methods: {
     // 查询表格数据
-    getDictTypeList() {
-      // 打开遮罩
-      this.loading = true
-      // 调用Type的api的listForPage方法进行分页查询
-      listForPage(this.addDateRange(this.queryParams, this.queryParams)).then(res => {
-        this.dictTypeTableList = res.data
+    getDeptList() {
+      this.loading = true // 打开遮罩
+      listDeptForPage(this.addDateRange(this.queryParams, this.dateRange)).then(res => {
+        this.deptTableList = res.data
         this.total = res.total
-        this.loading = false
+        this.loading = false// 关闭遮罩
       })
     },
-    /* 与搜索相关的方法 */
-    // 条件查询
+    /* 查询条件相关方法 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getDictTypeList()
+      this.getDeptList()
     },
-    // 重置查询条件
     resetQuery() {
-      // 使用全局表单重置方法
       this.resetForm('queryForm')
-      // 将日期数组也设置为空数组
       this.dateRange = []
-      // 重新获取查询的字典
-      this.getDictTypeList()
+      this.getDeptList()
     },
 
-    /* 与表格工具按钮相关的方法 */
-    // 打开添加的弹出层
+    /* 表格工具按钮相关方法 */
     handleAdd() {
-      // 打开弹出层
       this.open = true
-      // 对弹出层中的表单信息进行重置
       this.reset()
+      this.title = '添加科室信息'
+    },
+    handleSelectionChnage(selection) {
+      this.ids = selection.map(item => item.deptId)
+      this.single = selection.length !== 1
+      this.multiple = !selection.length
     },
 
-    // 缓存同步
-    handleCacheAsync() {
-      this.loading = true
-      dictCacheAsync().then(res => {
-        this.loading = false
-        this.msgSuccess('缓存同步成功')
-      })
-    },
-
-    /* 与表格数据相关的方法 */
-    // 翻译状态
+    /* 数据表格相关方法 */
     statusFormatter(row) {
       return this.selectDictLabel(this.statusOptions, row.status)
     },
-    // 打开修改的弹出层
     handleUpdate(row) {
-      // 根据不同的修改方式获取id
-      const dictId = row.dictId || this.ids
+      this.title = '修改科室信息'
+      const deptId = row.deptId || this.ids
       this.open = true
       this.reset()
       // 根据dictId查询一个字典信息
-      getDictTypeById(dictId).then(res => {
-        // 将查询的数据复制给form即可
+      this.loading = true
+      getDeptById(deptId).then(res => {
         this.form = res.data
+        this.loading = false
       })
     },
-    // 删除字典
     handleDelete(row) {
-      // 根据不同的修改方式获取id
-      const dictIds = row.dictId || this.ids
-      this.$confirm('此操作将永久删除该字典数据, 是否继续?', '提示', {
+      const deptIds = row.deptId || this.ids
+      this.$confirm('此操作将永久删除该科室数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.loading = true
-        deleteDictTypeByIds(dictIds).then(res => {
+        deleteDeptByIds(deptIds).then(res => {
           this.loading = false
           this.msgSuccess('删除成功')
-          // 重新查询数据
-          this.getDictTypeList()
+          this.getDeptList()// 全查询
         })
+      }).catch(() => {
+        this.msgError('删除已取消')
+        this.loading = false
       })
     },
-    // 数据表格的多选框选择时触发
-    handleSelectionChnage(selection) {
-      // 获取所有的id值
-      this.ids = selection.map(item => item.dictId)
-      // 当所选择的个数不是1时无法修改
-      this.single = selection.length !== 1
-      // 当未勾选时无法删除
-      this.multiple = !selection.length
-    },
 
-    /* 分页控件相关的方法 */
-    // 当pageSize发生变化时触发
+    /* 分页控件相关方法 */
     handleSizeChange(val) {
-      // 给pageSize重新赋值
       this.queryParams.pageSize = val
-      // 重新查询
-      this.getDictTypeList()
+      this.getDeptList()
     },
-    // 当页码改变时触发
     handleCurrentChange(val) {
       this.queryParams.pageNum = val
-      this.getDictTypeList()
+      this.getDeptList()
     },
 
-    /* 与添加修改弹出层相关的方法 */
-    // 取消
-    cancel() {
-      this.open = false
-    },
-    // 重置弹出层中的表单
-    reset() {
-      this.form = {
-        dictId: undefined,
-        dictName: undefined,
-        dictType: undefined,
-        status: '0',
-        remark: undefined
-      }
-      this.resetForm('form')
-    },
-    // 提交
-    handleSubmit(formName) {
-      this.$refs[formName].validate((valid) => {
+    /* 弹出层相关方法 */
+    handleSubmit() {
+      this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.loading = true
           // 做添加
-          if (this.form.dictId === undefined) {
-            addDictType(this.form).then(res => {
+          this.loading = true
+          if (this.form.deptId === undefined) {
+            addDept(this.form).then(res => {
               this.msgSuccess('保存成功')
               this.loading = false
-              // 重新查询列表数据
-              this.getDictTypeList()
-              // 退出弹出层
-              this.open = false
+              this.getDeptList()// 列表重新查询
+              this.open = false// 关闭弹出层
             }).catch(() => {
               this.loading = false
             })
           } else { // 做修改
-            updateDictType(this.form).then(res => {
+            updateDept(this.form).then(res => {
               this.msgSuccess('修改成功')
               this.loading = false
-              // 重新查询列表数据
-              this.getDictTypeList()
-              // 退出弹出层
-              this.open = false
+              this.getDeptList()// 列表重新查询
+              this.open = false// 关闭弹出层
             }).catch(() => {
               this.loading = false
             })
           }
         }
       })
+    },
+    reset() {
+      this.resetForm('form')
+      this.form = {
+        deptId: undefined,
+        deptName: undefined,
+        deptLeader: undefined,
+        deptNumber: undefined,
+        orderNum: 0,
+        regNumber: 0,
+        status: '0'
+      }
+    },
+    cancel() {
+      this.open = false
+      this.title = ''
     }
   }
 }
