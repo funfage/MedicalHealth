@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zrf.constants.Constants;
 import com.zrf.domain.MenuDto;
 import com.zrf.domain.SimpleUser;
+import com.zrf.mapper.RoleMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zrf.mapper.MenuMapper;
@@ -20,6 +22,9 @@ public class MenuServiceImpl implements MenuService{
 
     @Autowired
     private MenuMapper menuMapper;
+
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
     public List<Menu> selectMenuTree(boolean isAdmin, SimpleUser simpleUser) {
@@ -71,7 +76,8 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public int deleteMenuById(Long menuId) {
-        //先删除role_menu的中间表的数据【后面再加】
+        //先删除role_menu的中间表的数据
+        this.roleMapper.deleteRoleMenuByMenuIds(Arrays.asList(menuId));
         //再删除菜单或权限
         return this.menuMapper.deleteById(menuId);
     }

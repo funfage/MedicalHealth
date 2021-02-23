@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService{
@@ -87,6 +88,22 @@ public class RoleServiceImpl implements RoleService{
         roleMapper.deleteRoleMenuByRoleIds(Arrays.asList(roleId));
         for (Long menuId : menuIds) {
             roleMapper.saveRoleMenu(roleId, menuId);
+        }
+    }
+
+    @Override
+    public List<Long> getRoleIdsByUserId(Long userId) {
+        if (null == userId) {
+            return Collections.EMPTY_LIST;
+        }
+        return roleMapper.selectRoleIdsByUserId(userId);
+    }
+
+    @Override
+    public void saveRoleUser(Long userId, Long[] roleIds) {
+        roleMapper.deleteRoleUserByUserIds(Arrays.asList(userId));
+        for (Long roleId : roleIds) {
+            roleMapper.saveRoleUser(userId, roleId);
         }
     }
 }

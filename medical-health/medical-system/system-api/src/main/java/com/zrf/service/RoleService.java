@@ -55,4 +55,18 @@ public interface RoleService {
      * @param menuIds
      */
     void saveRoleMenu(Long roleId, Long[] menuIds);
+
+    /***
+     * 根据用户id查询用户拥有的角色IDS
+     * @param userId
+     * @return
+     */
+    List getRoleIdsByUserId(Long userId);
+
+    /**
+     * 保存角色和用户的关系
+     * @param userId
+     * @param roleIds
+     */
+    void saveRoleUser(Long userId, Long[] roleIds);
 }

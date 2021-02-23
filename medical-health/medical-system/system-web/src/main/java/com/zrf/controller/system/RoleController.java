@@ -36,8 +36,8 @@ public class RoleController {
     /**
      * 不分页面查询有效的
      */
-    @GetMapping("selectAllRoles")
-    public AjaxResult selectAllRoles() {
+    @GetMapping("selectAllRole")
+    public AjaxResult selectAllRole() {
         List<Role> lists = this.roleService.listAllRoles();
         return AjaxResult.success(lists);
     }
@@ -90,6 +90,31 @@ public class RoleController {
             menuIds = new Long[]{};
         }
         this.roleService.saveRoleMenu(roleId, menuIds);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 根据用户ID查询用户拥有的角色IDS
+     */
+    @GetMapping("getRoleIdsByUserId/{userId}")
+    public AjaxResult getRoleIdsByUserId(@PathVariable Long userId) {
+        List<Long> roleIds = roleService.getRoleIdsByUserId(userId);
+        return AjaxResult.success(roleIds);
+    }
+
+    /**
+     * 保存角色和用户的关系
+     */
+    @PostMapping("saveRoleUser/{userId}/{roleIds}")
+    public AjaxResult saveRoleUser(@PathVariable Long userId,@PathVariable Long[] roleIds){
+        /**
+         * 因为我们用的路径参数，前端可能传过来的roleIds是一个空的，但是为空的话无法匹配上面的路径
+         * 所以如果为空，我们让前端传一个-1过来，如果是-1说明当前角色一个权限也没有选择
+         */
+        if(roleIds.length==1&&roleIds[0].equals(-1L)){
+            roleIds=new Long[]{};
+        }
+        this.roleService.saveRoleUser(userId, roleIds);
         return AjaxResult.success();
     }
 

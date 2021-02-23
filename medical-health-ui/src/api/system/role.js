@@ -49,3 +49,30 @@ export function saveRoleMenu(roleId, menuIds) {
     method: 'post'
   })
 }
+
+// 查询所有可用角色
+export function selectAllRole() {
+  return request({
+    url: '/system/role/selectAllRole',
+    method: 'get'
+  })
+}
+// 根据用户ID查询用户拥有的角色IDS
+export function getRoleIdsByUserId(userId) {
+  return request({
+    url: '/system/role/getRoleIdsByUserId/' + userId,
+    method: 'get'
+  })
+}
+
+// 保存角色和用户之间的关系
+export function saveRoleUser(userId, roleIds) {
+  // 处理如果没有选择角色数据。无法匹配后台数据的问题
+  if (roleIds.length === 0) {
+    roleIds = [-1]
+  }
+  return request({
+    url: '/system/role/saveRoleUser/' + userId + '/' + roleIds,
+    method: 'post'
+  })
+}
