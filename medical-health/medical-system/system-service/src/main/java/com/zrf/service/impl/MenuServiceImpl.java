@@ -80,4 +80,9 @@ public class MenuServiceImpl implements MenuService{
     public boolean hasChildByMenuId(Long menuId) {
         return this.menuMapper.queryChildCountByMenuId(menuId) > 0L;
     }
+
+    @Override
+    public List<Long> getMenusIdsByRoleId(Long roleId) {
+        return menuMapper.queryMenuIdsByRoleId(roleId);
+    }
 }

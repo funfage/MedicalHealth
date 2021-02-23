@@ -45,3 +45,10 @@ export function selectMenuTree() {
     method: 'get'
   })
 }
+// 根据角色ID查询当前角色ID拥有的权限菜单
+export function getMenuIdsByRoleId(roleId) {
+  return request({
+    url: '/system/menu/getMenuIdsByRoleId/' + roleId,
+    method: 'get'
+  })
+}
