@@ -93,6 +93,4 @@ public class UserController {
         return AjaxResult.fail("重置失败,没有选择用户");
     }
 
-
-
 }

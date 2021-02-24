@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  * @author 张润发
  * @date 2021/2/21
  */
-@ApiModel(value="com-zrf-domain-OperLogDto")
+@ApiModel(value="com-zrf-dto-OperLogDto")
 @Data
 @EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor
