@@ -213,13 +213,13 @@ export const asyncRoutes = [
       },
       {
         path: 'medicinal',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/erp/medicines/index'),
         name: '/stock/medicinal',
         meta: { title: '药品信息维护', icon: 'list' }
       },
       {
         path: 'provider',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/erp/provider/index'),
         name: '/stock/provider',
         meta: { title: '供应商维护', icon: 'list' }
       },

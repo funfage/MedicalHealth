@@ -86,6 +86,39 @@
     <!-- 数据表格开始 -->
     <el-table v-loading="loading" border :data="operLogTableList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-form label-position="left" inline class="demo-table-expand">
+            <el-form-item label="操作模块">
+              <span>{{ props.row.title }}</span>
+            </el-form-item>
+            <el-form-item label="登陆信息">
+              <span>{{ props.row.operName }} // {{ props.row.operIp }} // {{ props.row.operLocation }}</span>
+            </el-form-item>
+            <el-form-item label="请求地址">
+              <span>{{ props.row.operUrl }}</span>
+            </el-form-item>
+            <el-form-item label="操作方法">
+              <span>{{ props.row.requestMethod }}</span>
+            </el-form-item>
+            <el-form-item label="请求参数">
+              <span>{{ props.row.operParam }}</span>
+            </el-form-item>
+            <el-form-item label="返回参数">
+              <span>{{ props.row.jsonResult }}</span>
+            </el-form-item>
+            <el-form-item label="操作状态">
+              <span>{{ props.row.status==0?'成功':'失败' }}</span>
+            </el-form-item>
+            <el-form-item label="操作时间">
+              <span>{{ props.row.operTime }}</span>
+            </el-form-item>
+            <el-form-item label="异常信息">
+              <span>{{ props.row.errorMsg }}</span>
+            </el-form-item>
+          </el-form>
+        </template>
+      </el-table-column>
       <el-table-column label="日志ID" align="center" prop="operId" />
       <el-table-column label="系统模块" align="center" prop="title" />
       <el-table-column label="操作类型" align="center" prop="businessType" :formatter="businessTypeFormatter" />
@@ -259,5 +292,16 @@ export default {
 }
 </script>
 <style scoped>
-
+  .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
 </style>

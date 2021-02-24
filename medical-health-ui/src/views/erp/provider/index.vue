@@ -2,28 +2,28 @@
   <div class="app-container">
     <!-- 查询条件开始 -->
     <el-form ref="queryForm" :model="queryParams" :inline="true" label-width="98px">
-      <el-form-item label="厂家名称" prop="producterName">
+      <el-form-item label="供应商名称" prop="providerName">
         <el-input
-          v-model="queryParams.producterName"
-          placeholder="请输入厂家名称"
+          v-model="queryParams.providerName"
+          placeholder="请输入供应商名称"
           clearable
           size="small"
           style="width:180px"
         />
       </el-form-item>
-      <el-form-item label="关键字" prop="keywords">
+      <el-form-item label="联系人" prop="contactName">
         <el-input
-          v-model="queryParams.keywords"
-          placeholder="请输入关键字"
+          v-model="queryParams.contactName"
+          placeholder="请输入联系人"
           clearable
           size="small"
           style="width:180px"
         />
       </el-form-item>
-      <el-form-item label="厂家电话" prop="producterTel">
+      <el-form-item label="供应商电话" prop="contactTel">
         <el-input
-          v-model="queryParams.producterTel"
-          placeholder="请输入厂家电话"
+          v-model="queryParams.contactTel"
+          placeholder="请输入供应商电话"
           clearable
           size="small"
           style="width:180px"
@@ -44,18 +44,6 @@
             :value="dict.dictValue"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="创建时间">
-        <el-date-picker
-          v-model="dateRange"
-          size="small"
-          style="width:240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholde="开始日期"
-          end-placeholde="结束日期"
-        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -79,16 +67,17 @@
     <!-- 表格工具按钮结束 -->
 
     <!-- 数据表格开始 -->
-    <el-table v-loading="loading" border :data="producterTableList" @selection-change="handleSelectionChnage">
+    <el-table v-loading="loading" border :data="providerTableList" @selection-change="handleSelectionChnage">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="厂家ID" align="center" width="120" prop="producterId" />
-      <el-table-column label="厂家名称" width="280" prop="producterName" />
-      <el-table-column label="厂家编码" align="center" prop="producterCode" />
-      <el-table-column label="联系人" align="center" prop="producterPerson" />
-      <el-table-column label="电话" align="center" prop="producterTel" />
-      <el-table-column label="关键字" align="center" prop="keywords" />
+      <el-table-column label="供应商ID" align="center" width="120" prop="providerId" />
+      <el-table-column label="供应商名称" width="220" prop="providerName" />
+      <el-table-column label="联系人" align="center" prop="contactName" />
+      <el-table-column label="联系人手机" align="center" prop="contactMobile" />
+      <el-table-column label="联系人电话" align="center" prop="contactTel" />
+      <el-table-column label="银行账号" width="200" align="center" prop="bankAccount" />
+      <el-table-column label="供应商地址" align="center" prop="providerAddress" />
       <el-table-column label="状态" prop="status" align="center" :formatter="statusFormatter" />
-      <el-table-column label="创建时间" align="center" prop="createTime" />
+      <el-table-column label="创建时间" width="180" align="center" prop="createTime" />
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="text" icon="el-icon-edit" size="mini" @click="handleUpdate(scope.row)">修改</el-button>
@@ -119,23 +108,23 @@
       append-to-body
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-        <el-form-item el-form-item label="厂家名称" prop="producterName">
-          <el-input v-model="form.producterName" placeholder="请输入厂家名称" clearable size="small" />
+        <el-form-item el-form-item label="供应商名称" prop="providerName">
+          <el-input v-model="form.providerName" placeholder="请输入供应商名称" clearable size="small" />
         </el-form-item>
-        <el-form-item label="厂家编码" prop="producterCode">
-          <el-input v-model="form.producterCode" placeholder="请输入厂家编码" clearable size="small" />
+        <el-form-item label="联系人" prop="contactName">
+          <el-input v-model="form.contactName" placeholder="请输入联系人" clearable size="small" />
         </el-form-item>
-        <el-form-item label="联系人" prop="producterPerson">
-          <el-input v-model="form.producterPerson" placeholder="请输入联系人" clearable size="small" />
+        <el-form-item label="手机" prop="contactMobile">
+          <el-input v-model="form.contactMobile" placeholder="请输入手机" clearable size="small" />
         </el-form-item>
-        <el-form-item label="电话" prop="producterTel">
-          <el-input v-model="form.producterTel" placeholder="请输入电话" clearable size="small" />
+        <el-form-item label="电话" prop="contactTel">
+          <el-input v-model="form.contactTel" placeholder="请输入电话" clearable size="small" />
         </el-form-item>
-        <el-form-item label="关键字" prop="keywords">
-          <el-input v-model="form.keywords" placeholder="请输入关键字" clearable size="small" />
+        <el-form-item label="银行账号" prop="bankAccount">
+          <el-input v-model="form.bankAccount" placeholder="请输入银行账号" clearable size="small" />
         </el-form-item>
-        <el-form-item label="地址" prop="producterAddress">
-          <el-input v-model="form.producterAddress" placeholder="请输入地址" clearable size="small" />
+        <el-form-item label="地址" prop="providerAddress">
+          <el-input v-model="form.providerAddress" placeholder="请输入地址" clearable size="small" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
@@ -154,14 +143,13 @@
       </span>
     </el-dialog>
     <!-- 添加修改弹出层结束 -->
-
   </div>
 </template>
 
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { listProducterForPage, addProducter, updateProducter, getProducterById, deleteProducterByIds } from '@/api/erp/producter'
+import { listProviderForPage, addProvider, updateProvider, getProviderById, deleteProviderByIds } from '@/api/erp/provider'
 export default {
   data() {
     // 这里存放数据
@@ -177,40 +165,38 @@ export default {
       // 分页数据总条数
       total: 0,
       // 字典表格数据
-      producterTableList: [],
+      providerTableList: [],
       // 弹出层标题
       title: '',
       // 是否显示弹出层
       open: false,
       // 状态数据字典
       statusOptions: [],
-      // 类型数据字典
-      typeOptions: [],
-      // 时间条件
-      dateRange: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        producterName: undefined,
-        producterCode: undefined,
-        producterTel: undefined,
-        status: undefined,
-        keywords: undefined
+        providerName: undefined,
+        contactName: undefined,
+        contactTel: undefined,
+        status: undefined
       },
       // 表单数据
       form: {},
       // 表单校验
       rules: {
-        producterName: [
-          { required: true, message: '厂家名称不能为空', trigger: 'blur' }
+        providerName: [
+          { required: true, message: '供应商名称不能为空', trigger: 'blur' }
         ],
-        producterTel: [
-          { required: true, message: '联系电话不能为空', trigger: 'blur' },
+        contactName: [
+          { required: true, message: '联系人不能为空', trigger: 'blur' }
+        ],
+        contactMobile: [
+          { required: true, message: '手机不能为空', trigger: 'blur' },
           { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur' }
         ],
-        keywords: [
-          { required: true, message: '查询关键字不能为空', trigger: 'blur' }
+        bankAccount: [
+          { required: true, message: '银行账号不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -221,27 +207,27 @@ export default {
       this.statusOptions = res.data
     })
     // 查询表格数据
-    this.getProducterList()
+    this.getProviderList()
   },
   // 方法集合
   methods: {
     // 查询表格数据
-    getProducterList() {
+    getProviderList() {
       this.loading = true // 打开遮罩
-      listProducterForPage(this.addDateRange(this.queryParams, this.dateRange)).then(res => {
-        this.producterTableList = res.data
+      listProviderForPage(this.queryParam).then(res => {
+        this.providerTableList = res.data
         this.total = res.total
         this.loading = false// 关闭遮罩
       })
     },
     /* 查询条件相关方法 */
     handleQuery() {
-      this.getProducterList()
+      this.getProviderList()
     },
     resetQuery() {
       this.resetForm('queryForm')
       this.dateRange = []
-      this.getProducterList()
+      this.getProviderList()
     },
 
     /* 表格工具按钮相关方法 */
@@ -251,7 +237,7 @@ export default {
       this.title = '添加生产厂家信息'
     },
     handleSelectionChnage(selection) {
-      this.ids = selection.map(item => item.producterId)
+      this.ids = selection.map(item => item.providerId)
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
@@ -266,28 +252,28 @@ export default {
     },
     handleUpdate(row) {
       this.title = '修改生产厂家信息'
-      const producterId = row.producterId || this.ids
+      const providerId = row.providerId || this.ids
       this.open = true
       this.reset()
       // 根据dictId查询一个字典信息
       this.loading = true
-      getProducterById(producterId).then(res => {
+      getProviderById(providerId).then(res => {
         this.form = res.data
         this.loading = false
       })
     },
     handleDelete(row) {
-      const producterIds = row.producterId || this.ids
+      const providerIds = row.providerId || this.ids
       this.$confirm('此操作将永久删除该生产厂家数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.loading = true
-        deleteProducterByIds(producterIds).then(res => {
+        deleteProviderByIds(providerIds).then(res => {
           this.loading = false
           this.msgSuccess('删除成功')
-          this.getProducterList()// 全查询
+          this.getProviderList()// 全查询
         })
       }).catch(() => {
         this.msgError('删除已取消')
@@ -298,11 +284,11 @@ export default {
     /* 分页控件相关方法 */
     handleSizeChange(val) {
       this.queryParams.pageSize = val
-      this.getProducterList()
+      this.getProviderList()
     },
     handleCurrentChange(val) {
       this.queryParams.pageNum = val
-      this.getProducterList()
+      this.getProviderList()
     },
 
     /* 弹出层相关方法 */
@@ -311,20 +297,20 @@ export default {
         if (valid) {
           // 做添加
           this.loading = true
-          if (this.form.producterId === undefined) {
-            addProducter(this.form).then(res => {
+          if (this.form.providerId === undefined) {
+            addProvider(this.form).then(res => {
               this.msgSuccess('保存成功')
               this.loading = false
-              this.getProducterList()// 列表重新查询
+              this.getProviderList()// 列表重新查询
               this.open = false// 关闭弹出层
             }).catch(() => {
               this.loading = false
             })
           } else { // 做修改
-            updateProducter(this.form).then(res => {
+            updateProvider(this.form).then(res => {
               this.msgSuccess('修改成功')
               this.loading = false
-              this.getProducterList()// 列表重新查询
+              this.getProviderList()// 列表重新查询
               this.open = false// 关闭弹出层
             }).catch(() => {
               this.loading = false
@@ -336,11 +322,13 @@ export default {
     reset() {
       this.resetForm('form')
       this.form = {
-        producterId: undefined,
-        producterName: undefined,
-        producterCode: undefined,
-        producterTel: undefined,
-        keywords: undefined,
+        providerId: undefined,
+        providerName: undefined,
+        contactName: undefined,
+        contactMobile: undefined,
+        contactTel: undefined,
+        bankAccount: undefined,
+        providerAddress: undefined,
         status: '0'
       }
     },
