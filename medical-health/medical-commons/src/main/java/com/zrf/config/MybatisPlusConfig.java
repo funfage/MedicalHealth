@@ -1,4 +1,4 @@
-package com.zrf.config.mybatisplus;
+package com.zrf.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;

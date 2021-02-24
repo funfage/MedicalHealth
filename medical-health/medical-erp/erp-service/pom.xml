@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>erp-service</artifactId>
-
     <dependencies>
         <dependency>
             <groupId>com.zrf</groupId>
@@ -62,4 +61,5 @@
             </exclusions>
         </dependency>
     </dependencies>
+
 </project>

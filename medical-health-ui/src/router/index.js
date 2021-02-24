@@ -149,7 +149,7 @@ export const asyncRoutes = [
       },
       {
         path: 'reg_fee',
-        component: () => import('@/views/registeredItem/index'),
+        component: () => import('@/views/system/registeredItem/index'),
         name: '/system/reg_fee',
         meta: {
           title: '挂号费用设置',
@@ -207,7 +207,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'producter',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/erp/producter/index'),
         name: '/stock/producter',
         meta: { title: '生产厂家维护', icon: 'list' }
       },

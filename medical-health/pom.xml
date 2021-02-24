@@ -5,16 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <!--<module>his-commons</module>
-        <module>his-system</module>
-        <module>his-erp</module>
-        <module>his-doctor</module>
-        <module>his-statistics</module>-->
         <module>medical-commons</module>
         <module>medical-system</module>
-        <module>medical-erp</module>
         <module>medical-doctor</module>
         <module>medical-statistics</module>
+        <module>medical-erp</module>
     </modules>
     <!--依赖springboot-->
     <parent>

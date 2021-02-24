@@ -12,12 +12,11 @@
     <artifactId>medical-erp</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>erp-api</module>
         <module>erp-domain</module>
+        <module>erp-api</module>
         <module>erp-mapper</module>
         <module>erp-service</module>
     </modules>
-
 
     <dependencies>
         <dependency>
@@ -26,5 +25,4 @@
             <version>1.0</version>
         </dependency>
     </dependencies>
-
 </project>

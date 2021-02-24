@@ -87,6 +87,18 @@
             </exclusions>
         </dependency>
 
+        <!--导入erp-service api-->
+        <dependency>
+            <groupId>com.zrf</groupId>
+            <artifactId>erp-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!--导入hystrix-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <version>2.2.1.RELEASE</version>
+        </dependency>
     </dependencies>
 
 </project>
