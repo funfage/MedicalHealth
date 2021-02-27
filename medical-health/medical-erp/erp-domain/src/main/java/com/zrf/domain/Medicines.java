@@ -14,136 +14,136 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
-    * 药品信息表
-    */
-@ApiModel(value="com-zrf-domain-Medicines")
+ * 药品信息表
+ */
+@ApiModel(value = "com-zrf-domain-Medicines")
 @Data
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "stock_medicines")
 public class Medicines extends BaseEntity {
     @TableId(value = "medicines_id", type = IdType.AUTO)
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value = "")
     private Long medicinesId;
 
     /**
      * 药品编号
      */
     @TableField(value = "medicines_number")
-    @ApiModelProperty(value="药品编号")
+    @ApiModelProperty(value = "药品编号")
     private String medicinesNumber;
 
     /**
      * 药品名称
      */
     @TableField(value = "medicines_name")
-    @ApiModelProperty(value="药品名称")
+    @ApiModelProperty(value = "药品名称")
     private String medicinesName;
 
     /**
      * 药品分类 sys_dict_data表his_medicines_type
      */
     @TableField(value = "medicines_type")
-    @ApiModelProperty(value="药品分类 sys_dict_data表his_medicines_type")
+    @ApiModelProperty(value = "药品分类 sys_dict_data表his_medicines_type")
     private String medicinesType;
 
     /**
      * 处方类型 sys_dict_data表his_prescription_type
      */
     @TableField(value = "prescription_type")
-    @ApiModelProperty(value="处方类型 sys_dict_data表his_prescription_type")
+    @ApiModelProperty(value = "处方类型 sys_dict_data表his_prescription_type")
     private String prescriptionType;
 
     /**
      * 处方价格
      */
     @TableField(value = "prescription_price")
-    @ApiModelProperty(value="处方价格")
+    @ApiModelProperty(value = "处方价格")
     private BigDecimal prescriptionPrice;
 
     /**
      * 单位（g/条）
      */
     @TableField(value = "unit")
-    @ApiModelProperty(value="单位（g/条）")
+    @ApiModelProperty(value = "单位（g/条）")
     private String unit;
 
     /**
      * 换算量
      */
     @TableField(value = "conversion")
-    @ApiModelProperty(value="换算量")
+    @ApiModelProperty(value = "换算量")
     private Integer conversion;
 
     /**
      * 关键字
      */
     @TableField(value = "keywords")
-    @ApiModelProperty(value="关键字")
+    @ApiModelProperty(value = "关键字")
     private String keywords;
 
     /**
      * 生产厂家ID
      */
     @TableField(value = "producter_id")
-    @ApiModelProperty(value="生产厂家ID")
+    @ApiModelProperty(value = "生产厂家ID")
     private String producterId;
 
     /**
      * 药品状态0正常0停用 sys_dict_data表 sys_normal_disable
      */
     @TableField(value = "status")
-    @ApiModelProperty(value="药品状态0正常0停用 sys_dict_data表 sys_normal_disable")
+    @ApiModelProperty(value = "药品状态0正常0停用 sys_dict_data表 sys_normal_disable")
     private String status;
 
     /**
      * 库存量
      */
     @TableField(value = "medicines_stock_num")
-    @ApiModelProperty(value="库存量")
+    @ApiModelProperty(value = "库存量")
     private Long medicinesStockNum;
 
     /**
      * 预警值
      */
     @TableField(value = "medicines_stock_danger_num")
-    @ApiModelProperty(value="预警值")
+    @ApiModelProperty(value = "预警值")
     private Long medicinesStockDangerNum;
 
     /**
      * 创建时间
      */
     @TableField(value = "create_time")
-    @ApiModelProperty(value="创建时间")
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
     /**
      * 更新时间
      */
     @TableField(value = "update_time")
-    @ApiModelProperty(value="更新时间")
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
     /**
      * 创建者
      */
     @TableField(value = "create_by")
-    @ApiModelProperty(value="创建者")
+    @ApiModelProperty(value = "创建者")
     private String createBy;
 
     /**
      * 更新者
      */
     @TableField(value = "update_by")
-    @ApiModelProperty(value="更新者")
+    @ApiModelProperty(value = "更新者")
     private String updateBy;
 
     /**
      * 删除状态0正常0删除 要有重新导入功能
      */
     @TableField(value = "del_flag")
-    @ApiModelProperty(value="删除状态0正常0删除 要有重新导入功能")
+    @ApiModelProperty(value = "删除状态0正常0删除 要有重新导入功能")
     private String delFlag;
 
     public static final String COL_MEDICINES_ID = "medicines_id";

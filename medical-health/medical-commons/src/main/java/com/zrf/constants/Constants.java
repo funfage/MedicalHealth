@@ -38,7 +38,7 @@ public interface Constants {
     String MENU_TYPE_C = "C";
     String MENU_TYPE_F = "F";
     /**
-     * 入库单状态 1未提交2待审核 3审核通过 4审核失败 5作废 6 入库成功
+     * 入库单状态 1未提交 2待审核 3审核通过 4审核失败 5作废 6 入库成功
      */
     String STOCK_PURCHASE_STATUS_1 = "1";
     String STOCK_PURCHASE_STATUS_2 = "2";
@@ -127,4 +127,10 @@ public interface Constants {
      */
     String LOGIN_TYPE_SYSTEM = "0" ;
     String LOGIN_TYPE_PATIENT = "1" ;
+
+    /**
+     * ID前缀
+     */
+    String ID_PROFIX_CG="CG";
+
 }
