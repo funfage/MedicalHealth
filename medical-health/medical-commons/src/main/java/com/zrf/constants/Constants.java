@@ -125,12 +125,18 @@ public interface Constants {
     /**
      * 登陆类型0系统用户1患者用户
      */
-    String LOGIN_TYPE_SYSTEM = "0" ;
-    String LOGIN_TYPE_PATIENT = "1" ;
+    String LOGIN_TYPE_SYSTEM = "0";
+    String LOGIN_TYPE_PATIENT = "1";
 
     /**
      * ID前缀
      */
-    String ID_PROFIX_CG="CG";
+    String ID_PROFIX_CG = "CG";
+
+    /**
+     * 日期格式化方式
+     */
+    String DATE_FORMATTER = "yyyy-MM-dd";
+    Integer WEEK_LENGTH = 7;
 
 }

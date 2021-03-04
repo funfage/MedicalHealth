@@ -99,6 +99,14 @@
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
             <version>2.2.1.RELEASE</version>
         </dependency>
+        <!--依赖doctor-api-->
+        <dependency>
+            <groupId>com.zrf</groupId>
+            <artifactId>doctor-api</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
+
+
 
 </project>

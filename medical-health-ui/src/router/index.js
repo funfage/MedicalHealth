@@ -237,7 +237,7 @@ export const asyncRoutes = [
       },
       {
         path: 'inventory',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/erp/inventoryLog/index'),
         name: '/stock/inventory',
         meta: { title: '库存查询', icon: 'list' }
       }
@@ -345,13 +345,13 @@ export const asyncRoutes = [
       },
       {
         path: 'myscheduling',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/doctor/scheduling/myscheduling'),
         name: '/doctor/myscheduling',
         meta: { title: '我的排班', icon: 'list' }
       },
       {
         path: 'scheduling',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/doctor/scheduling/index'),
         name: '/doctor/scheduling',
         meta: { title: '医生排班', icon: 'list' }
       },
