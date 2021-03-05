@@ -1,20 +1,19 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { MessageBox, Message, Notification } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
-// create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // 设置请求超时时间
+  timeout: 5000 // 设置请求超时间
 })
 
 // 请求拦截
 service.interceptors.request.use(
   config => {
+    // 在发送请求之前把token放到请求头里面
     if (store.getters.token) {
-      // 这里的token和后端的保持一致
+      // 这里的token和后端的保持一样
       config.headers['token'] = getToken()
     }
     return config
@@ -45,12 +44,7 @@ service.interceptors.response.use(
         title: '服务器内部出现异常，请联系管理员'
       })
       return Promise.reject('error')// 记录错
-    } else if (res.code === 400) {
-      Notification.error({
-        title: res.msg
-      })
-      return Promise.reject('error')// 记录错
-    } else if (res.code !== 200) { // 可能是其它参数出错
+    } else if (res.code === 400) { // 可能是其它参数出错
       Notification.error({
         title: res.msg
       })

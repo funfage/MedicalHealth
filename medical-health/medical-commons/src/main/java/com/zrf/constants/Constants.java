@@ -132,6 +132,8 @@ public interface Constants {
      * ID前缀
      */
     String ID_PROFIX_CG = "CG";
+    String ID_PROFIX_HZ = "HZ";
+    String ID_PROFIX_GH = "GH";
 
     /**
      * 日期格式化方式

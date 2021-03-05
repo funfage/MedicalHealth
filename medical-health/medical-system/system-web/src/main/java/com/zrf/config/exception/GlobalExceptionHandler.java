@@ -21,12 +21,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = Exception.class)
-    public AjaxResult exceptionHandler(Exception e) {
-        System.out.println("未知异常！原因是:" + e);
-        return AjaxResult.fail(e.getMessage());
-    }
-
     /**
      * 当系统出现MethodArgumentNotValidException这个异常时，会调用下面的方法
      *

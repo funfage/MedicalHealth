@@ -16,8 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+
 @Service
-public class DeptServiceImpl implements DeptService{
+public class DeptServiceImpl implements DeptService {
 
     @Autowired
     private DeptMapper deptMapper;
@@ -70,9 +71,24 @@ public class DeptServiceImpl implements DeptService{
     @Override
     public int deleteDeptByIds(Long[] deptIds) {
         List<Long> ids = Arrays.asList(deptIds);
-        if(ids.size() > 0){
+        if (ids.size() > 0) {
             return this.deptMapper.deleteBatchIds(ids);
         }
         return 0;
+    }
+
+    @Override
+    public List<Dept> listDeptByDeptIds(List<Long> deptIds) {
+        QueryWrapper<Dept> qw = new QueryWrapper<>();
+        qw.in(Dept.COL_DEPT_ID, deptIds);
+        return deptMapper.selectList(qw);
+    }
+
+    @Override
+    public void updateDeptRegNumber(Long deptId, Integer regNumber) {
+        Dept dept = new Dept();
+        dept.setDeptId(deptId);
+        dept.setRegNumber(regNumber);
+        deptMapper.updateById(dept);
     }
 }

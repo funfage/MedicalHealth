@@ -1,0 +1,332 @@
+<template>
+  <div class="app-container">
+    <!-- 查询条件开始 -->
+    <el-form ref="queryForm" :model="queryParams" :inline="true" label-width="98px">
+      <el-form-item label="患者姓名" prop="name">
+        <el-input
+          v-model="queryParams.name"
+          placeholder="请输入患者姓名"
+          clearable
+          size="small"
+          style="width:180px"
+        />
+      </el-form-item>
+      <el-form-item label="手机号" prop="phone">
+        <el-input
+          v-model="queryParams.phone"
+          placeholder="请输入手机号"
+          clearable
+          size="small"
+          style="width:180px"
+        />
+      </el-form-item>
+      <el-form-item label="身份证号" prop="idCard">
+        <el-input
+          v-model="queryParams.idCard"
+          placeholder="请输身份证号"
+          clearable
+          size="small"
+          style="width:180px"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button type="primary" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <!-- 查询条件结束 -->
+
+    <!-- 表格工具按钮开始 -->
+    <el-row :gutter="10" style="margin-bottom: 8px;">
+      <el-col :span="1.5">
+        <el-button type="primary" icon="el-icon-plus" size="mini" :disabled="single" @click="handleViewFile">查看档案</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single" @click="handleViewCareHistory">查看就诊病例</el-button>
+      </el-col>
+    </el-row>
+    <!-- 表格工具按钮结束 -->
+
+    <!-- 数据表格开始 -->
+    <el-table v-loading="loading" border :data="patientTableList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column label="电话" align="center" prop="phone" />
+      <el-table-column label="身份证号" align="center" prop="idCard" />
+      <el-table-column label="出生年月" align="center" prop="birthday">
+        <template slot-scope="scope">
+          <span>{{ scope.row.birthday.substring(0,10) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="年龄" align="center" prop="phone" :formatter="calculateAgeFormatter" />
+      <el-table-column label="性别" prop="sex" align="center" :formatter="sexFormatter" />
+      <el-table-column label="信息状态" prop="isFinal" align="center" :formatter="isFinalFormatter" />
+      <el-table-column label="创建时间" align="center" prop="createTime" />
+    </el-table>
+    <!-- 数据表格结束 -->
+    <!-- 分页控件开始 -->
+    <el-pagination
+      v-show="total>0"
+      :current-page="queryParams.pageNum"
+      :page-sizes="[5, 10, 20, 30]"
+      :page-size="queryParams.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+    <!-- 分页控件结束 -->
+
+    <!-- 查看患者档案弹出层开始 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="fileOpen"
+      width="1000px"
+      center
+      append-to-body
+    >
+      <el-form label-position="left" label-width="120px" inline class="demo-table-expand">
+        <el-form-item label="ID:">
+          <span v-text="patientObj.patientId" />
+        </el-form-item>
+        <el-form-item label="姓名:">
+          <span v-text="patientObj.name" />
+        </el-form-item>
+        <el-form-item label="身份证号:">
+          <span v-text="patientObj.idCard" />
+        </el-form-item>
+        <el-form-item label="电话:">
+          <span v-text="patientObj.phone" />
+        </el-form-item>
+        <el-form-item label="患者性别:">
+          <span v-text="patientObj.sex" />
+        </el-form-item>
+        <el-form-item label="出生年月:">
+          <span v-text="patientObj.birthday" />
+        </el-form-item>
+        <el-form-item label="地址信息:">
+          <span v-text="patientObj.address" />
+        </el-form-item>
+        <el-form-item label="过敏信息:">
+          <span v-text="patientObj.allergyInfo" />
+        </el-form-item>
+        <el-form-item label="是否完善信息:">
+          <span v-text="patientObj.isFinal" />
+        </el-form-item>
+        <el-form-item label="最后登录ip:">
+          <span v-text="patientObj.lastLoginIp" />
+        </el-form-item>
+        <el-form-item label="最后登录时间:">
+          <span v-text="patientObj.lastLoginTime" />
+        </el-form-item>
+        <el-form-item label="创建时间:">
+          <span v-text="patientObj.createTime" />
+        </el-form-item>
+        <el-form-item label="更新时间:">
+          <span v-text="patientObj.updateTime" />
+        </el-form-item>
+        <el-form-item label="紧急联系人:">
+          <span v-text="patientFileObj.emergencyContactName" />
+        </el-form-item>
+        <el-form-item label="紧急联系人电话:">
+          <span v-text="patientFileObj.emergencyContactPhone" />
+        </el-form-item>
+        <el-form-item label="关系:">
+          <span v-text="patientFileObj.emergencyContactRelation" />
+        </el-form-item>
+        <el-form-item label="左耳听力:">
+          <span v-text="patientFileObj.leftEarHearing" />
+        </el-form-item>
+        <el-form-item label="右耳听力:">
+          <span v-text="patientFileObj.rightEarHearing" />
+        </el-form-item>
+        <el-form-item label="左眼视力:">
+          <span v-text="patientFileObj.leftVision" />
+        </el-form-item>
+        <el-form-item label="右眼视力:">
+          <span v-text="patientFileObj.rightVision" />
+        </el-form-item>
+        <el-form-item label="身高:">
+          <span v-text="patientFileObj.height" />
+        </el-form-item>
+        <el-form-item label="体重:">
+          <span v-text="patientFileObj.weight" />
+        </el-form-item>
+        <el-form-item label="血型:">
+          <span v-text="patientFileObj.bloodType" />
+        </el-form-item>
+        <el-form-item label="个人史:">
+          <span v-text="patientFileObj.personalInfo" />
+        </el-form-item>
+        <el-form-item label="家族史:">
+          <span v-text="patientFileObj.familyInfo" />
+        </el-form-item>
+        <el-form-item label="档案创建时间:">
+          <span v-text="patientFileObj.createTime" />
+        </el-form-item>
+        <el-form-item label="档案更新时间:">
+          <span v-text="patientFileObj.updateTime" />
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelFile">取 消</el-button>
+      </span>
+    </el-dialog>
+    <!-- 查看患者档案弹出层结束 -->
+
+  </div>
+</template>
+
+<script>
+// 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
+// 例如：import 《组件名称》 from '《组件路径》';
+import { listPatientForPage, getPatientById, getPatientFileById } from '@/api/doctor/patient'
+export default {
+  // 定义页面数据
+  data() {
+    return {
+      // 是否启用遮罩层
+      loading: false,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
+      // 分页数据总条数
+      total: 0,
+      // 字典表格数据
+      patientTableList: [],
+      // 弹出层标题
+      title: '',
+      // 是否显示档案弹出层
+      fileOpen: false,
+      // 性别数据字典
+      sexOptions: [],
+      // 完善信息状态
+      isFinalOptions: [],
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        name: undefined,
+        idCard: undefined,
+        phone: undefined
+      },
+      // 患者信息
+      patientObj: {},
+      // 档案信息
+      patientFileObj: {}
+    }
+  },
+  created() {
+    // 加载性别
+    this.getDataByType('sys_user_sex').then(res => {
+      this.sexOptions = res.data
+    })
+    // 加载性别
+    this.getDataByType('his_patient_msg_final').then(res => {
+      this.isFinalOptions = res.data
+    })
+    // 查询表格数据
+    this.getPatientList()
+  },
+  // 方法集合
+  methods: {
+    // 查询表格数据
+    getPatientList() {
+      this.loading = true // 打开遮罩
+      listPatientForPage(this.queryParams).then(res => {
+        this.patientTableList = res.data
+        this.total = res.total
+        this.loading = false// 关闭遮罩
+      })
+    },
+    /* 查询条件相关方法 */
+    handleQuery() {
+      this.getPatientList()
+    },
+    resetQuery() {
+      this.resetForm('queryForm')
+      this.getPatientList()
+    },
+
+    /* 表格工具按钮相关方法 */
+    handleViewFile() {
+      const patientId = this.ids[0]
+      this.fileOpen = true
+      this.title = '查询患者档案信息'
+      this.patientObj = {}
+      this.patientFileObj = {}
+      // 查询患者信息
+      getPatientById(patientId).then(res => {
+        this.patientObj = res.data
+        const sex = this.patientObj.sex
+        const isFinal = this.patientObj.isFinal
+        //  性别状态 和 完善状态格式化
+        this.patientObj.sex = (sex === '0' ? '男' : sex === '1' ? '女' : '未知')
+        this.patientObj.isFinal = isFinal === '0' ? '未完善' : '已完善'
+      })
+      // 查询病例信息
+      getPatientFileById(patientId).then(res => {
+        // 判断该患者是佛有档案信息
+        if (res.data !== null) {
+          this.patientFileObj = res.data
+        }
+      })
+    },
+    // TODO
+    handleViewCareHistory() {
+
+    },
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.patientId)
+      this.single = selection.length !== 1
+      this.multiple = !selection.length
+    },
+
+    /* 数据表格相关方法 */
+    // 翻译信息状态
+    isFinalFormatter(row) {
+      return this.selectDictLabel(this.isFinalOptions, row.isFinal)
+    },
+    sexFormatter(row) {
+      return this.selectDictLabel(this.sexOptions, row.sex)
+    },
+    // 根据出生年月计算年龄
+    calculateAgeFormatter(row) {
+      return this.getAge(row.birthday.substring(0, 10))
+    },
+
+    /* 分页控件相关方法 */
+    handleSizeChange(val) {
+      this.queryParams.pageSize = val
+      this.getPatientList()
+    },
+    handleCurrentChange(val) {
+      this.queryParams.pageNum = val
+      this.getPatientList()
+    },
+
+    /* 查看患者档案弹出层相关方法 */
+    cancelFile() {
+      this.fileOpen = false
+      this.title = ''
+    }
+  }
+}
+</script>
+<style scoped>
+  .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+</style>

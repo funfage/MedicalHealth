@@ -17,4 +17,21 @@
     user_id, dept_id, scheduling_day, subsection_type, scheduling_type, create_time, 
     create_by
   </sql>
+    <select id="queryHasSchedulingDeptIds" resultType="java.lang.Long">
+      select distinct dept_id from his_scheduling t
+      <where>
+        <if test="deptId != null">
+          t.dept_id =#{deptId}
+        </if>
+        <if test="schedulingType != null and schedulingType != ''">
+          and t.scheduling_type=#{schedulingType}
+        </if>
+        <if test="schedulingDay != null and schedulingDay != ''">
+          and  t.scheduling_day=#{schedulingDay}
+        </if>
+        <if test="subsectionType != null and subsectionType != ''">
+          and  t.subsection_type=#{subsectionType}
+        </if>
+      </where>
+    </select>
 </mapper>

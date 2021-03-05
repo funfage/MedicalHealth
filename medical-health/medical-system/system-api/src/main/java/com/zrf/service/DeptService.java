@@ -49,4 +49,17 @@ public interface DeptService {
      */
     int deleteDeptByIds(Long[] deptIds);
 
+    /**
+     * 根据部门ID查询部门信息
+     * @param deptIds
+     * @return
+     */
+    List<Dept> listDeptByDeptIds(List<Long> deptIds);
+
+    /**
+     * 根据部门ID更新部门挂号编号
+     * @param deptId
+     * @param regNumber
+     */
+    void updateDeptRegNumber(Long deptId, Integer regNumber);
 }

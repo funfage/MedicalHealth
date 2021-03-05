@@ -1,7 +1,6 @@
 package com.zrf.service;
 
 import com.zrf.domain.Scheduling;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.zrf.dto.SchedulingFormDto;
 import com.zrf.dto.SchedulingQueryDto;
 
@@ -22,4 +21,15 @@ public interface SchedulingService {
      * @return
      */
     int saveScheduling(SchedulingFormDto schedulingFormDto);
+
+    /**
+     * 查询所有排班的部门信息
+     * @param deptId
+     * @param schedulingDay
+     * @param schedulingType
+     * @param subsectionType
+     * @return
+     */
+    List<Long> queryHasSchedulingDeptIds(Long deptId, String schedulingDay, String schedulingType, String subsectionType);
+
 }

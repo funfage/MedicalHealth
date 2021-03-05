@@ -327,7 +327,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'registered',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/doctor/registration/index'),
         name: '/doctor/registered',
         meta: { title: '门诊挂号', icon: 'list' }
       },
@@ -357,7 +357,7 @@ export const asyncRoutes = [
       },
       {
         path: 'patient',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/doctor/patient/index'),
         name: '/doctor/patient',
         meta: { title: '患者库', icon: 'list' }
       }

@@ -14,14 +14,19 @@ import './permission' // permission control
 import './utils/error-log' // error log
 import * as filters from './filters' // global filters
 // 引入自定义的
-import { resetForm, addDateRange, selectDictLabel, handleTree } from '@/utils/medical-utils'
+import { resetForm, addDateRange, selectDictLabel, handleTree, getAge, getCurrentTimeType } from '@/utils/medical-utils'
 import { getDataByType } from '@/api/system/dict/data'
+import moment from 'moment'
 // 全局方法挂载
 Vue.prototype.resetForm = resetForm
 Vue.prototype.addDateRange = addDateRange
 Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.getDataByType = getDataByType // 加载全局的根据字典类型查询字典的方法[基本每个页面都要使用]
 Vue.prototype.handleTree = handleTree // 下载全局构造数对象
+Vue.prototype.getAge = getAge // 挂载出生年月格式化
+Vue.prototype.getCurrentTimeType = getCurrentTimeType // 挂载出生年月格式化
+Vue.prototype.moment = moment
+
 // 挂载全局消息框
 Vue.prototype.msgSuccess = function(msg) {
   this.$message({ showClose: true, message: msg, type: 'success' })

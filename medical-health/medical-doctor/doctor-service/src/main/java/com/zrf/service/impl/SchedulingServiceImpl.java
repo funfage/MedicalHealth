@@ -76,6 +76,11 @@ public class SchedulingServiceImpl implements SchedulingService {
         }
     }
 
+    @Override
+    public List<Long> queryHasSchedulingDeptIds(Long deptId, String schedulingDay, String schedulingType, String subsectionType) {
+        return schedulingMapper.queryHasSchedulingDeptIds(deptId,schedulingDay,schedulingType,subsectionType);
+    }
+
     /**
      * 初始化值班记录
      *
