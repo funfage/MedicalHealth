@@ -37,5 +37,8 @@ dubbo:
     address: zookeeper://www.zhowyunfat.cn:2181 # 119.29.106.231
   consumer:
     check: false
+  protocol:
+    name: dubbo
+    port: -1
   config-center:
     timeout: 10000

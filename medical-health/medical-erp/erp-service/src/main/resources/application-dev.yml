@@ -75,3 +75,6 @@ dubbo:
     address: zookeeper://www.zhowyunfat.cn:2181
   consumer:
     check: false
+  protocol:
+    name: dubbo
+    port: -1

@@ -39,3 +39,6 @@ dubbo:
     check: false
   config-center:
     timeout: 10000
+  protocol:
+    name: dubbo
+    port: -1

@@ -333,13 +333,13 @@ export const asyncRoutes = [
       },
       {
         path: 'registeredlist',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/doctor/registration/list'),
         name: '/doctor/registeredlist',
         meta: { title: '挂号列表', icon: 'list' }
       },
       {
         path: 'newcare',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/doctor/care/index'),
         name: '/doctor/newcare',
         meta: { title: '新开就诊', icon: 'list' }
       },

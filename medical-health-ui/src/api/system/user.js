@@ -45,3 +45,10 @@ export function resetPwd(userId) {
     method: 'post'
   })
 }
+// 查询所有需要排班的用户数据
+export function selectNeedSchedulingUsers() {
+  return request({
+    url: '/system/user/selectAllUser',
+    method: 'get'
+  })
+}

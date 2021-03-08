@@ -14,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
 
@@ -43,7 +45,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         qw.ge(registrationDto.getBeginTime() != null, Registration.COL_VISIT_DATE, DateUtil.format(registrationDto.getBeginTime(), Constants.DATE_FORMATTER));
         qw.le(registrationDto.getEndTime() != null, Registration.COL_VISIT_DATE, DateUtil.format(registrationDto.getEndTime(), Constants.DATE_FORMATTER));
         qw.orderByDesc(Registration.COL_CREATE_TIME);
-        this.registrationMapper.selectPage(page, qw);
+        registrationMapper.selectPage(page, qw);
         return new DataGridView(page.getTotal(), page.getRecords());
     }
 
@@ -55,6 +57,20 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Registration queryRegistrationByRegId(String registrationId) {
         return registrationMapper.selectById(registrationId);
+    }
+
+    @Override
+    public List<Registration> queryRegistration(Long deptId, String subsectionType, String schedulingType, String regStatus, Long userId) {
+        QueryWrapper<Registration> qw = new QueryWrapper<>();
+        qw.eq(Registration.COL_DEPT_ID, deptId);
+        qw.eq(StringUtils.isNotBlank(subsectionType), Registration.COL_SUBSECTION_TYPE, subsectionType);
+        qw.eq(Registration.COL_SCHEDULING_TYPE, schedulingType);
+        qw.eq(Registration.COL_REG_STATUS, regStatus);
+        // 只查询当天的挂号信息
+        qw.eq(Registration.COL_VISIT_DATE, DateUtil.format(DateUtil.date(), Constants.DATE_FORMATTER));
+        qw.eq(null != userId, Registration.COL_USER_ID, userId);
+        qw.orderByAsc(Registration.COL_REG_NUMBER);
+        return registrationMapper.selectList(qw);
     }
 
 }

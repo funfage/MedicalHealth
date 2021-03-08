@@ -38,3 +38,19 @@ export function collectFee(registrationId) {
   })
 }
 
+// 作废
+export function doInvalid(registrationId) {
+  return request({
+    url: '/doctor/registration/doInvalid/' + registrationId,
+    method: 'post'
+  })
+}
+
+// 退号
+export function doReturn(registrationId) {
+  return request({
+    url: '/doctor/registration/doReturn/' + registrationId,
+    method: 'post'
+  })
+}
+

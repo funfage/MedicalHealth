@@ -153,5 +153,46 @@ public class RegistrationController extends BaseController {
         registration.setRegStatus(Constants.REG_STATUS_1);
         return AjaxResult.toAjax(registrationService.updateRegistrationById(registration));
     }
+
+    /**
+     * 作废
+     */
+    @PostMapping("doInvalid/{regId}")
+//    @HystrixCommand
+    public AjaxResult doInvalid(@PathVariable String regId){
+        // 根据id查询挂号单信息并判断挂号信息是否存在
+        Registration registration = registrationService.queryRegistrationByRegId(regId);
+        if (null == registration) {
+            return AjaxResult.fail("当前挂号单【" + regId + "对应的挂号单不存在，请核对后在查询");
+        }
+        // 只有挂号单id为未收费状态才可以进行作废
+        if (!registration.getRegStatus().equals(Constants.REG_STATUS_0)) {
+            return AjaxResult.fail("当前挂号单【" + regId + "的状态不是未收费状态，不能作废");
+        }
+        // 设置挂号单状态为作废状态
+        registration.setRegStatus(Constants.REG_STATUS_5);
+        return AjaxResult.toAjax(registrationService.updateRegistrationById(registration));
+    }
+
+    /**
+     * 退费
+     */
+    @PostMapping("doReturn/{regId}")
+//    @HystrixCommand
+    public AjaxResult doReturn(@PathVariable String regId){
+        // 根据id查询挂号单信息并判断挂号信息是否存在
+        Registration registration = registrationService.queryRegistrationByRegId(regId);
+        if (null == registration) {
+            return AjaxResult.fail("当前挂号单【" + regId + "对应的挂号单不存在，请核对后在查询");
+        }
+        // 只有挂号单id为待就诊状态才可以进行作废
+        if (!registration.getRegStatus().equals(Constants.REG_STATUS_1)) {
+            return AjaxResult.fail("当前挂号单【" + regId + "的状态不是待就诊状态，不能退费");
+        }
+        // 设置挂号单状态为退费状态
+        registration.setRegStatus(Constants.REG_STATUS_4);
+        return AjaxResult.toAjax(registrationService.updateRegistrationById(registration));
+    }
+
 }
 
