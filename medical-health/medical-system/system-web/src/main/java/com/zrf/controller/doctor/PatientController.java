@@ -78,7 +78,7 @@ public class PatientController extends BaseController {
             List<CareOrder> careOrders = careService.queryCareOrdersByChId(careHistory.getChId());
             for (CareOrder careOrder : careOrders) {
                 Map<String, Object> careOrderMap = BeanUtil.beanToMap(careOrder);
-                List<CareOrderItem> careOrderItems = careService.queryCareOrderItemsByCoId(careOrder.getCoId());
+                List<CareOrderItem> careOrderItems = careService.queryCareOrderItemsByCoId(careOrder.getCoId(), null);
                 careOrderMap.put("careOrderItems", careOrderItems);
                 reCareOrders.add(careOrderMap);
             }

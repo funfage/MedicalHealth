@@ -81,9 +81,10 @@ public class CareServiceImpl implements CareService {
     }
 
     @Override
-    public List<CareOrderItem> queryCareOrderItemsByCoId(String coId) {
+    public List<CareOrderItem> queryCareOrderItemsByCoId(String coId, String status) {
         QueryWrapper<CareOrderItem> qw = new QueryWrapper<>();
         qw.eq(CareOrderItem.COL_CO_ID, coId);
+        qw.eq(StringUtils.isNotBlank(status),CareOrderItem.COL_STATUS,status);
         return careOrderItemMapper.selectList(qw);
     }
 

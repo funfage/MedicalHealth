@@ -137,11 +137,17 @@ public interface Constants {
     String ID_PROFIX_CH = "CH";
     String ID_PROFIX_CO = "CO"; //病历
     String ID_PROFIX_ITEM = "ITEM"; //病历详情
+    String ID_PROFIX_ODC = "ODC"; // 支付订单
 
     /**
      * 日期格式化方式
      */
     String DATE_FORMATTER = "yyyy-MM-dd";
     Integer WEEK_LENGTH = 7;
+
+    /**
+     * 支付相关
+     */
+    String ORDER_CHARGE_SUBJECT = "医疗管理系统支付平台";
 
 }

@@ -176,7 +176,7 @@ public class CareController extends BaseController {
         for (CareOrder careOrder : careOrders) {
             Map<String, Object> map = new HashMap<>();
             map.put("careOrder", careOrder);
-            List<CareOrderItem> careOrderItems = this.careService.queryCareOrderItemsByCoId(careOrder.getCoId());
+            List<CareOrderItem> careOrderItems = this.careService.queryCareOrderItemsByCoId(careOrder.getCoId(), null);
             map.put("careOrderItems", careOrderItems);
             res.add(map);
         }

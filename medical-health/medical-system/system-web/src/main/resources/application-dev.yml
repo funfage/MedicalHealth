@@ -42,6 +42,7 @@ shiro:
     - /login/captcha*
     - /login/logout*
     - /druid/**
+    - /pay/callback/**
   authc-urls:
     - /**
 #mybatisplus的配置
