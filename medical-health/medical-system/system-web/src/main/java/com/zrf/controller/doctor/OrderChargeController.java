@@ -6,10 +6,8 @@ import com.zrf.config.pay.AliPayConfig;
 import com.zrf.config.pay.PayService;
 import com.zrf.constants.Constants;
 import com.zrf.controller.BaseController;
-import com.zrf.domain.CareHistory;
-import com.zrf.domain.CareOrder;
-import com.zrf.domain.CareOrderItem;
-import com.zrf.domain.OrderCharge;
+import com.zrf.domain.*;
+import com.zrf.dto.OrderChargeDto;
 import com.zrf.dto.OrderChargeFormDto;
 import com.zrf.dto.OrderChargeItemDto;
 import com.zrf.service.CareService;
@@ -17,6 +15,7 @@ import com.zrf.service.OrderChargeService;
 import com.zrf.utils.IdGeneratorSnowflake;
 import com.zrf.utils.ShiroSecurityUtils;
 import com.zrf.vo.AjaxResult;
+import com.zrf.vo.DataGridView;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.validation.annotation.Validated;
@@ -97,7 +96,7 @@ public class OrderChargeController extends BaseController {
         orderChargeFormDto.getOrderChargeDto().setOrderId(orderId);
         orderChargeService.saveOrderAndItems(orderChargeFormDto);
         // 因为是现金支付，所以直接更新订单状态
-        orderChargeService.paySuccess(orderId, null);
+        orderChargeService.paySuccess(orderId, null, Constants.PAY_TYPE_0);
         return AjaxResult.success("创建订单并现金支付成功");
     }
 
@@ -146,21 +145,86 @@ public class OrderChargeController extends BaseController {
     public AjaxResult queryOrderChargeOrderId(@PathVariable String orderId) {
         OrderCharge orderCharge = orderChargeService.queryOrderChargeByOrderId(orderId);
         if (null == orderCharge) {
-            return AjaxResult.fail("【" + orderId + "】订单号所在的订单已撤销支付");
-        }
-        if (!orderCharge.getPayType().equals(Constants.PAY_TYPE_1)) {
-            return AjaxResult.fail("【" + orderId + "】订单号所在的订单不是支付宝支付的订单，请核对后再输入");
+            return AjaxResult.fail("【" + orderId + "】订单号所在的订单不存在，请核对后在输入");
         }
         return AjaxResult.success(orderCharge);
     }
 
     /**
-     * 根据订单id删除订单信息
+     * 根据订单id删除订单信息和详情信息
      */
     @DeleteMapping("deleteOrderChargeAndItemsByOrderId/{orderId}")
     public AjaxResult deleteOrderChargeAndItemsByOrderId(@PathVariable String orderId) {
         orderChargeService.deleteOrderChargeAndItemsByOrderId(orderId);
         return AjaxResult.success();
+    }
+
+    /**
+     * 分页查询所有收费单
+     */
+    @GetMapping("queryAllOrderChargeForPage")
+    public AjaxResult queryAllOrderChargeForPage(OrderChargeDto orderChargeDto) {
+        DataGridView dataGridView = orderChargeService.queryAllOrderChargeForPage(orderChargeDto);
+        return AjaxResult.success("查询成功", dataGridView.getData(), dataGridView.getTotal());
+    }
+
+    /**
+     * 根据收费单的ID查询收费详情信息
+     */
+    @GetMapping("queryOrderChargeItemByOrderId/{orderId}")
+    public AjaxResult queryOrderChargeItemByOrderId(@PathVariable String orderId) {
+        List<OrderChargeItem> list = orderChargeService.queryOrderChargeItemByOrderId(orderId);
+        return AjaxResult.success(list);
+    }
+
+    /**
+     * 订单列表现金支付订单
+     */
+    @GetMapping("payWithCash/{orderId}")
+    public AjaxResult payWithCash(@PathVariable String orderId){
+        OrderCharge orderCharge = orderChargeService.queryOrderChargeByOrderId(orderId);
+        if (null == orderCharge) {
+            return AjaxResult.fail("【" + orderId + "】订单号所在的订单不存在，请核对后在输入");
+        }
+        if (orderCharge.getOrderStatus().equals(Constants.ORDER_STATUS_1)) {
+            return AjaxResult.fail("【" + orderId + "】订单号不是未支付状态，请核对后在输入");
+        }
+        orderChargeService.paySuccess(orderId, null, Constants.PAY_TYPE_0);
+        return AjaxResult.success();
+    }
+
+    /**
+     * 订单列表里再次支付宝支付
+     */
+    @GetMapping("toPayOrderWithZfb/{orderId}")
+    public AjaxResult toPayOrderWithZfb(@PathVariable String orderId){
+        OrderCharge orderCharge = orderChargeService.queryOrderChargeByOrderId(orderId);
+        if (null == orderCharge) {
+            return AjaxResult.fail("【" + orderId + "】订单号所在的订单不存在，请核对后在输入");
+        }
+        if (orderCharge.getOrderStatus().equals(Constants.ORDER_STATUS_1)) {
+            return AjaxResult.fail("【" + orderId + "】订单号不是未支付状态，请核对后在输入");
+        }
+        String outTradeNo = orderId;
+        String notifyUrl = AliPayConfig.notifyUrl + outTradeNo;
+        String subject = Constants.ORDER_CHARGE_SUBJECT;
+        String totalAmount = orderCharge.getOrderAmount().toString();
+        String undiscountableAmount = null;
+        String body = "";
+        // 调用支付宝的支付方法
+        Map<String, Object> pay = PayService.pay(outTradeNo, subject, totalAmount, undiscountableAmount, body, notifyUrl);
+        // 获取二维码的url
+        String qrCodde = pay.get("qrCode").toString();
+        if (StringUtils.isNotBlank(qrCodde)) {
+            //返回支付成功的结果集
+            Map<String, Object> res = new HashMap<>();
+            res.put("orderId", orderId);
+            res.put("allAmount", totalAmount);
+            res.put("payUrl", qrCodde);
+            return AjaxResult.success(res);
+        } else {
+            return AjaxResult.fail(pay.get("msg").toString());
+        }
     }
 
 }

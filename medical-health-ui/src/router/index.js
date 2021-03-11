@@ -261,7 +261,7 @@ export const asyncRoutes = [
       },
       {
         path: 'chargelist',
-        component: () => import('@/views/error-page/404'),
+        component: () => import('@/views/doctor/charge/chargelist'),
         name: '/charge/chargelist',
         meta: { title: '收费查询', icon: 'list' }
       },

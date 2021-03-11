@@ -1,7 +1,12 @@
 package com.zrf.service;
 
 import com.zrf.domain.OrderCharge;
+import com.zrf.domain.OrderChargeItem;
+import com.zrf.dto.OrderChargeDto;
 import com.zrf.dto.OrderChargeFormDto;
+import com.zrf.vo.DataGridView;
+
+import java.util.List;
 
 /**
  * @author 张润发
@@ -20,7 +25,7 @@ public interface OrderChargeService {
      * @param orderId
      * @param payPlatformId 平台交易id，使用支付宝支付时需要使用
      */
-    void paySuccess(String orderId, String payPlatformId);
+    void paySuccess(String orderId, String payPlatformId, String payType);
 
     /**
      * 根据订单id查询订单信息
@@ -34,4 +39,18 @@ public interface OrderChargeService {
      * @param orderId
      */
     void deleteOrderChargeAndItemsByOrderId(String orderId);
+
+    /**
+     * 分页查询所有收费单
+     * @param orderChargeDto
+     * @return
+     */
+    DataGridView queryAllOrderChargeForPage(OrderChargeDto orderChargeDto);
+
+    /**
+     * 跟姐姐收费单id查询收费详情信息
+     * @param orderId
+     * @return
+     */
+    List<OrderChargeItem> queryOrderChargeItemByOrderId(String orderId);
 }

@@ -3,6 +3,7 @@ package com.zrf.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zrf.constants.Constants;
 import com.zrf.domain.CareOrderItem;
 import com.zrf.domain.OrderCharge;
@@ -15,6 +16,8 @@ import com.zrf.mapper.CareOrderMapper;
 import com.zrf.mapper.OrderChargeItemMapper;
 import com.zrf.mapper.OrderChargeMapper;
 import com.zrf.service.OrderChargeService;
+import com.zrf.vo.DataGridView;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Method;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,13 +75,15 @@ public class OrderChargeServiceImpl implements OrderChargeService {
     }
 
     @Override
-    public void paySuccess(String orderId, String payPlatformId) {
+    public void paySuccess(String orderId, String payPlatformId, String payType) {
         // 根据id查询订单信息
         OrderCharge orderCharge = orderChargeMapper.selectById(orderId);
         // 设置交易编号
         orderCharge.setPayPlatformId(payPlatformId);
         // 设置交易时间
         orderCharge.setPayTime(DateUtil.date());
+        // 设置字符类型
+        orderCharge.setPayType(payType);
         // 修改订单状态为已支付
         orderCharge.setOrderStatus(Constants.ORDER_STATUS_1);
         orderChargeMapper.updateById(orderCharge);
@@ -120,6 +125,24 @@ public class OrderChargeServiceImpl implements OrderChargeService {
         wrapper.eq(OrderChargeItem.COL_ORDER_ID, orderId);
         wrapper.eq(OrderChargeItem.COL_STATUS, Constants.ORDER_DETAILS_STATUS_0);
         orderChargeItemMapper.delete(wrapper);
+    }
+
+    @Override
+    public DataGridView queryAllOrderChargeForPage(OrderChargeDto orderChargeDto) {
+        Page<OrderCharge> page = new Page<>(orderChargeDto.getPageNum(), orderChargeDto.getPageSize());
+        QueryWrapper<OrderCharge> wrapper = new QueryWrapper<>();
+        wrapper.like(StringUtils.isNotBlank(orderChargeDto.getPatientName()), OrderCharge.COL_PATIENT_NAME, orderChargeDto.getPatientName());
+        wrapper.like(StringUtils.isNotBlank(orderChargeDto.getRegId()), OrderCharge.COL_REG_ID, orderChargeDto.getRegId());
+        wrapper.orderByAsc(OrderCharge.COL_CREATE_TIME);
+        orderChargeMapper.selectPage(page, wrapper);
+        return new DataGridView(page.getTotal(), page.getRecords());
+    }
+
+    @Override
+    public List<OrderChargeItem> queryOrderChargeItemByOrderId(String orderId) {
+        QueryWrapper<OrderChargeItem> qw = new QueryWrapper<>();
+        qw.eq(OrderChargeItem.COL_ORDER_ID, orderId);
+        return this.orderChargeItemMapper.selectList(qw);
     }
 
 }

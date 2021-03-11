@@ -36,3 +36,33 @@ export function deleteOrderChargeAndItemsByOrderId(orderId) {
     method: 'delete'
   })
 }
+// 分页查询所有的订单
+export function queryAllOrderChargeForPage(params) {
+  return request({
+    url: '/doctor/charge/queryAllOrderChargeForPage',
+    method: 'get',
+    params: params
+  })
+}
+// 根据订单ID查询订单详情
+export function queryOrderChargeItemByOrderId(orderId) {
+  return request({
+    url: '/doctor/charge/queryOrderChargeItemByOrderId/' + orderId,
+    method: 'get'
+  })
+}
+// 根据订单ID返回订单支付地址和总金额
+export function toPayOrderWithZfb(orderId) {
+  return request({
+    url: '/doctor/charge/toPayOrderWithZfb/' + orderId,
+    method: 'get'
+  })
+}
+// 现金支付
+export function payWithCash(orderId) {
+  return request({
+    url: '/doctor/charge/payWithCash/' + orderId,
+    method: 'get'
+  })
+}
+

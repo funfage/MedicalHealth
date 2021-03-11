@@ -122,7 +122,7 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import { getNoChargeCareHistoryByRegId, createOrderChargeWithCash,
-  createOrderChargeWithZfb, queryOrderChargeOrderId, deleteOrderChargeAndItemsByOrderId } from '@/api/doctor/charge'
+  createOrderChargeWithZfb, queryOrderChargeOrderId } from '@/api/doctor/charge'
 import vueQr from 'vue-qr/'
 export default {
   components: {
@@ -174,6 +174,7 @@ export default {
       }
       this.careHistory = {}
       this.careOrders = []
+      this.itemObjs = []
       this.loading = true
       this.loadingText = '数据查询中，请稍后....'
       getNoChargeCareHistoryByRegId(this.regId).then(res => {
@@ -316,7 +317,7 @@ export default {
                   clearInterval(tx.intervalObj)
                   tx.$notify({
                     title: '支付成功',
-                    message: '【' + tx.payObj.orderId + '】的订单编写支付成功',
+                    message: '订单号为【' + tx.payObj.orderId + '】的订单支付成功',
                     type: 'success'
                   })
                   tx.openPay = false
@@ -384,17 +385,10 @@ export default {
         type: 'warning'
       }).then(() => {
         this.msgError('您已放弃支付，可以回到收费查询列表里面再次支付')
-        deleteOrderChargeAndItemsByOrderId(this.payObj.orderId).then(res => {
-          this.resetCurrentParams()
-          // 关闭轮询
-          clearInterval(this.intervalObj)
-          this.openPay = false
-        }).catch(() => {
-          this.resetCurrentParams()
-          this.openPay = false
-          // 关闭轮询
-          clearInterval(this.intervalObj)
-        })
+        this.resetCurrentParams()
+        this.openPay = false
+        // 关闭轮询
+        clearInterval(this.intervalObj)
       }).catch(() => {
         this.msgSuccess('取消出现异常')
         clearInterval(this.intervalObj)

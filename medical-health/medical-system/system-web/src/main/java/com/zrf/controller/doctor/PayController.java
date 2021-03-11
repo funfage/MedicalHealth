@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.zrf.config.pay.AliPayConfig;
+import com.zrf.constants.Constants;
 import com.zrf.service.OrderChargeService;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +51,7 @@ public class PayController {
                         // 否则说明是支付的回调
                         String tradeNo = parameterMap.get("trade_no");
                         log.info("收费成功，交易id为：{}", tradeNo);
-                        orderChargeService.paySuccess(orderId, tradeNo);
+                        orderChargeService.paySuccess(orderId, tradeNo, Constants.PAY_TYPE_1);
                     }
                 } else {
                     log.error("异步通知验证签名结果失败");
