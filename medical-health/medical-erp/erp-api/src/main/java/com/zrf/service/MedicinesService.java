@@ -58,4 +58,12 @@ public interface MedicinesService {
      * 调整库存
      */
     int updateMedicinesStorage(Long medicinesId,Long medicinesStockNum);
+
+    /**
+     * 扣减库存
+     * @param medicinesId 药品id
+     * @param num 扣减量
+     * @return
+     */
+    int deductionMedicinesStorage(Long medicinesId, long num);
 }

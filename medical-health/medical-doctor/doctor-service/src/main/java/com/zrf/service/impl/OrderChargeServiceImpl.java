@@ -145,4 +145,9 @@ public class OrderChargeServiceImpl implements OrderChargeService {
         return this.orderChargeItemMapper.selectList(qw);
     }
 
+    @Override
+    public OrderChargeItem queryOrderChargeItemByItemId(String itemId) {
+        return this.orderChargeItemMapper.selectById(itemId);
+    }
+
 }

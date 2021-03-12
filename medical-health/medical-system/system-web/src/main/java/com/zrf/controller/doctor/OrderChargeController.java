@@ -63,7 +63,7 @@ public class OrderChargeController extends BaseController {
             Map<String, Object> beanToMap = BeanUtil.beanToMap(careOrder);
             beanToMap.put("careOrderItems", Collections.EMPTY_LIST);
             BigDecimal allAmount = new BigDecimal("0");
-            //根据处方ID查询未支持的处方详情列表
+            //根据处方ID查询未支付的处方详情列表
             List<CareOrderItem> careOrderItems = this.careService.queryCareOrderItemsByCoId(careOrder.getCoId(), Constants.ORDER_DETAILS_STATUS_0);
             if (!careOrderItems.isEmpty()) {
                 // 重新计算总价
@@ -109,6 +109,7 @@ public class OrderChargeController extends BaseController {
         // 支付宝支付
         orderChargeFormDto.getOrderChargeDto().setPayType(Constants.PAY_TYPE_1);
         orderChargeFormDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
+        // 生成支付单号
         String orderId = IdGeneratorSnowflake.generatorIdWithProfix(Constants.ID_PROFIX_ODC);
         orderChargeFormDto.getOrderChargeDto().setOrderId(orderId);
         orderChargeService.saveOrderAndItems(orderChargeFormDto);

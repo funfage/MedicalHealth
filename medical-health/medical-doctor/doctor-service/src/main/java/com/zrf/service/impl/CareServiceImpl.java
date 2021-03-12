@@ -4,21 +4,17 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zrf.constants.Constants;
-import com.zrf.domain.CareHistory;
-import com.zrf.domain.CareOrder;
-import com.zrf.domain.CareOrderItem;
-import com.zrf.domain.Registration;
+import com.zrf.domain.*;
 import com.zrf.dto.CareHistoryDto;
 import com.zrf.dto.CareOrderDto;
 import com.zrf.dto.CareOrderFormDto;
 import com.zrf.dto.CareOrderItemDto;
-import com.zrf.mapper.CareHistoryMapper;
-import com.zrf.mapper.CareOrderItemMapper;
-import com.zrf.mapper.CareOrderMapper;
-import com.zrf.mapper.RegistrationMapper;
+import com.zrf.mapper.*;
 import com.zrf.service.CareService;
+import com.zrf.service.MedicinesService;
 import com.zrf.utils.IdGeneratorSnowflake;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,6 +39,12 @@ public class CareServiceImpl implements CareService {
 
     @Autowired
     private RegistrationMapper registrationMapper;
+
+    @Autowired
+    private OrderChargeItemMapper orderChargeItemMapper;
+
+    @Reference
+    private MedicinesService medicinesService;
 
     @Override
     public List<CareHistory> queryCareHistoryByPatientId(String patientId) {
@@ -84,7 +86,7 @@ public class CareServiceImpl implements CareService {
     public List<CareOrderItem> queryCareOrderItemsByCoId(String coId, String status) {
         QueryWrapper<CareOrderItem> qw = new QueryWrapper<>();
         qw.eq(CareOrderItem.COL_CO_ID, coId);
-        qw.eq(StringUtils.isNotBlank(status),CareOrderItem.COL_STATUS,status);
+        qw.eq(StringUtils.isNotBlank(status), CareOrderItem.COL_STATUS, status);
         return careOrderItemMapper.selectList(qw);
     }
 
@@ -155,9 +157,40 @@ public class CareServiceImpl implements CareService {
 
     @Override
     public int visitComplete(String regId) {
-        Registration registration=new Registration();
+        Registration registration = new Registration();
         registration.setRegId(regId);
         registration.setRegStatus(Constants.REG_STATUS_3);
         return registrationMapper.updateById(registration);
+    }
+
+    @Override
+    public String doMedicine(List<String> itemIds) {
+        //根据详情ID查询处方详情
+        QueryWrapper<CareOrderItem> qw=new QueryWrapper<>();
+        qw.in(CareOrderItem.COL_ITEM_ID,itemIds);
+        List<CareOrderItem> careOrderItems = this.careOrderItemMapper.selectList(qw);
+        StringBuffer sb=new StringBuffer();
+        for (CareOrderItem careOrderItem : careOrderItems) {
+            //库存扣减
+            int i=this.medicinesService.deductionMedicinesStorage(Long.valueOf(careOrderItem.getItemRefId()),careOrderItem.getNum().longValue());
+            if(i>0){//说明库存够
+                //更新处方详情状态
+                careOrderItem.setStatus(Constants.ORDER_DETAILS_STATUS_3);//已完成
+                this.careOrderItemMapper.updateById(careOrderItem);
+                //更新收费详情状态
+                OrderChargeItem orderChargeItem=new OrderChargeItem();
+                orderChargeItem.setItemId(careOrderItem.getItemId());
+                orderChargeItem.setStatus(Constants.ORDER_DETAILS_STATUS_3);
+                this.orderChargeItemMapper.updateById(orderChargeItem);
+            }else{
+                sb.append("【").append(careOrderItem.getItemName()).append("】发药失败\n");
+            }
+        }
+        if(StringUtils.isBlank(sb.toString())){
+            return null;
+        }else{
+            sb.append("原因：库存不足");
+            return sb.toString();
+        }
     }
 }

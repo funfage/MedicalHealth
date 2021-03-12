@@ -141,27 +141,28 @@ public class PayService {
         String msg = "";
         switch (result.getTradeStatus()) {
             case SUCCESS:
-                log.info("支付宝退款成功: )");
+                log.info("支付宝退款成功！");
                 code = 200;
-                msg = result.getResponse().getSubMsg();
+                msg = "支付宝退款成功！";
+                map.put("tradeNo", result.getResponse().getTradeNo());
                 break;
 
             case FAILED:
                 log.error("支付宝退款失败!!!");
                 code = 500;
-                msg = result.getResponse().getSubMsg();
+                msg = "支付宝退款失败!!!";
                 break;
 
             case UNKNOWN:
                 log.error("系统异常，订单退款状态未知!!!");
                 code = 500;
-                msg = result.getResponse().getSubMsg();
+                msg = "系统异常，订单退款状态未知!!!";
                 break;
 
             default:
                 log.error("不支持的交易状态，交易返回异常!!!");
                 code = 500;
-                msg = result.getResponse().getSubMsg();
+                msg = "不支持的交易状态，交易返回异常!!!";
                 break;
         }
         map.put("code", code);
