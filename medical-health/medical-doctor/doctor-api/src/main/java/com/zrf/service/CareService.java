@@ -91,4 +91,19 @@ public interface CareService {
      * @return
      */
     String doMedicine(List<String> itemIds);
+
+    /**
+     * 根据处方类型和状态查询
+     * @param coType
+     * @param status
+     * @return
+     */
+    List<CareOrderItem> queryCareOrderItemsByStatus(String coType, String status);
+
+    /**
+     * 根据处方id查询处方信息
+     * @param coId
+     * @return
+     */
+    CareOrder queryCareOrderByCoId(String coId);
 }

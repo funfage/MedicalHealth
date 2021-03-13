@@ -193,4 +193,17 @@ public class CareServiceImpl implements CareService {
             return sb.toString();
         }
     }
+
+    @Override
+    public List<CareOrderItem> queryCareOrderItemsByStatus(String coType, String status) {
+        QueryWrapper<CareOrderItem> wrapper = new QueryWrapper<>();
+        wrapper.eq(StringUtils.isNotBlank(coType), CareOrderItem.COL_ITEM_TYPE, coType);
+        wrapper.eq(StringUtils.isNotBlank(status), CareOrderItem.COL_STATUS, status);
+        return careOrderItemMapper.selectList(wrapper);
+    }
+
+    @Override
+    public CareOrder queryCareOrderByCoId(String coId) {
+        return careOrderMapper.selectById(coId);
+    }
 }

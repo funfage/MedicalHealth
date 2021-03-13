@@ -24,6 +24,11 @@ spring:
         deny:
         url-pattern: /druid/*
         enabled: true  #启用数据源监控
+  servlet:
+    multipart:
+      max-file-size: 100MB # 上传文件大小配置
+      max-request-size: 100MB
+
   #配置redis
   redis:
     port: 6390
@@ -56,7 +61,7 @@ mybatis-plus:
 #fastdfs的配置
 fdfs:
   so-timeout: 2500       # 读取时间
-  connect-timeout: 600   # 连接超时时间
+  connect-timeout: 1000   # 连接超时时间
   thumb-image:           # 缩略图
     width: 100
     height: 100

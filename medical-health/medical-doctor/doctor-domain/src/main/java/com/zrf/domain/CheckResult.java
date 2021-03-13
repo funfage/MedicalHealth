@@ -23,9 +23,9 @@ public class CheckResult extends BaseEntity {
     /**
      * 处方检查项ID
      */
-    @TableId(value = "coc_id", type = IdType.INPUT)
+    @TableId(value = "item_id", type = IdType.INPUT)
     @ApiModelProperty(value="处方检查项ID")
-    private String cocId;
+    private String itemId;
 
     /**
      * 检查项目ID
@@ -84,6 +84,13 @@ public class CheckResult extends BaseEntity {
     private String resultStatus;
 
     /**
+     * 关联挂号单号
+     */
+    @TableField(value = "reg_id")
+    @ApiModelProperty(value="关联挂号单号")
+    private String regId;
+
+    /**
      * 创建时间
      */
     @TableField(value = "create_time")
@@ -111,7 +118,7 @@ public class CheckResult extends BaseEntity {
     @ApiModelProperty(value="更新者")
     private String updateBy;
 
-    public static final String COL_COC_ID = "coc_id";
+    public static final String COL_ITEM_ID = "item_id";
 
     public static final String COL_CHECK_ITEM_ID = "check_item_id";
 
@@ -128,6 +135,8 @@ public class CheckResult extends BaseEntity {
     public static final String COL_PATIENT_NAME = "patient_name";
 
     public static final String COL_RESULT_STATUS = "result_status";
+
+    public static final String COL_REG_ID = "reg_id";
 
     public static final String COL_CREATE_TIME = "create_time";
 
