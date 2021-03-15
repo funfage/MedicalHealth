@@ -510,6 +510,7 @@ export default {
     sexFormatter(row) {
       return this.selectDictLabel(this.sexOptions, row.sex)
     },
+    // 翻译排班状态
     schedulingFlagFormatter(row) {
       return this.selectDictLabel(this.schedulingFlagOptions, row.schedulingFlag)
     },
@@ -653,8 +654,10 @@ export default {
     handleSaveRoleUserSubmit() {
       saveRoleUser(this.currentUserId, this.roleIds).then(res => {
         this.msgSuccess('分配成功')
+        this.selectRoleOpen = false
       }).catch(function() {
         this.msgError('分配失败')
+        this.selectRoleOpen = false
       })
     },
     cancelRoleUser() {

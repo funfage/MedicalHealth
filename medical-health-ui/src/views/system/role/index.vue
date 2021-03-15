@@ -382,10 +382,11 @@ export default {
       const finalKeys = halfcheckedKeys.concat(checkedKeys)
       saveRoleMenu(this.currentRoleId, finalKeys).then(res => {
         this.msgSuccess('分配成功')
+        this.selectMenuOpen = false
       }).catch(() => {
         this.msgSuccess('分配失败')
+        this.selectMenuOpen = false
       })
-      this.selectMenuOpen = false
     },
     cancelSelectMenu() {
       this.selectMenuOpen = false

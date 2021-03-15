@@ -82,11 +82,11 @@ export default {
       // 数组结构
       revenueObj: {
         totalRevenue: 0.00, // 合计收入
-        overview: {// 收支概况: 总收入￥0 总退费￥0
+        overview: { // 收支概况: 总收入￥0 总退费￥0
           toll: 0.00,
           refund: 0.00
         },
-        channel: {// 收入渠道: 现金支付￥0 支付宝支付￥0 现金退费￥0 支付宝退费￥0
+        channel: { // 收入渠道: 现金支付￥0 支付宝支付￥0 现金退费￥0 支付宝退费￥0
           cashIncome: 0.00,
           alipayIncome: 0.00,
           cashRefund: 0.00,

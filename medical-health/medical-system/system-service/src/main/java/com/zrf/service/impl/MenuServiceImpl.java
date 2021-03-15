@@ -37,8 +37,8 @@ public class MenuServiceImpl implements MenuService{
         if (isAdmin) {
             return menuMapper.selectList(wrapper);
         } else {
-            // TODO 根据用户id查询拥有的菜单信息，这里先暂时返回一样的数据
-            return menuMapper.selectList(wrapper);
+            // 根据用户id查询拥有的菜单信息
+            return menuMapper.selectListByUserId(simpleUser.getUserId());
         }
     }
 

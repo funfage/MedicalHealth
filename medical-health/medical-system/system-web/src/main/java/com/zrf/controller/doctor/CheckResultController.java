@@ -164,7 +164,7 @@ public class CheckResultController extends BaseController {
      */
     @PostMapping("queryAllCheckResultForPage")
     public AjaxResult queryAllCheckResultForPage(@RequestBody CheckResultDto checkResultDto){
-        DataGridView dataGridView=this.checkResultService.queryAllCheckResultForPage(checkResultDto);
+        DataGridView dataGridView=checkResultService.queryAllCheckResultForPage(checkResultDto);
         return AjaxResult.success("查询成功",dataGridView.getData(),dataGridView.getTotal());
     }
 
