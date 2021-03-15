@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zrf.mapper.RevenueMapper">
+    <resultMap id="IncomeResultMap" type="com.zrf.domain.Income">
+        <result property="orderAmount" column="order_amount"/>
+        <result property="payType" column="pay_type"/>
+    </resultMap>
+    <resultMap id="RefundResultMap" type="com.zrf.domain.Refund">
+        <result property="backAmount" column="back_amount"/>
+        <result property="backType" column="back_type"/>
+    </resultMap>
+    <sql id="Income_Column_List">
+        order_amount, pay_type
+     </sql>
+    <sql id="Refund_Column_List">
+        back_amount, back_type
+     </sql>
+
+    <!--查询收入的SQL-->
+    <select id="queryIncome" resultMap="IncomeResultMap">
+        select
+        <include refid="Income_Column_List"/>
+        from his_order_charge
+        <where>
+            order_status = '1'
+            <if test="revenue.queryDate != null and revenue.queryDate != ''">
+                and date_format(create_time, '%Y-%m-%d') = #{revenue.queryDate}
+            </if>
+            <if test="revenue.beginTime != null">
+                and create_time <![CDATA[ >= ]]> #{revenue.beginTime}
+            </if>
+            <if test="revenue.endTime != null">
+                and create_time <![CDATA[ <= #{revenue.endTime}]]>
+            </if>
+        </where>
+    </select>
+    <!--查询退款的SQL-->
+    <select id="queryRefund" resultMap="RefundResultMap">
+        select
+        <include refid="Refund_Column_List"/>
+        from his_order_backfee
+        <where>
+            back_status = '1'
+            <if test="revenue.queryDate != null and revenue.queryDate != ''">
+                and date_format(create_time, '%Y-%m-%d') = #{revenue.queryDate}
+            </if>
+            <if test="revenue.beginTime != null">
+                and create_time <![CDATA[ >= ]]> #{revenue.beginTime}
+            </if>
+            <if test="revenue.endTime != null">
+                and create_time <![CDATA[ <= #{revenue.endTime}]]>
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -105,6 +105,12 @@
             <artifactId>doctor-api</artifactId>
             <version>1.0</version>
         </dependency>
+        <!--依赖statistics-api-->
+        <dependency>
+            <groupId>com.zrf</groupId>
+            <artifactId>statistics-api</artifactId>
+            <version>1.0</version>
+        </dependency>
         <!--导入支付宝相关jar包-->
         <dependency>
             <groupId>com.alibaba</groupId>
