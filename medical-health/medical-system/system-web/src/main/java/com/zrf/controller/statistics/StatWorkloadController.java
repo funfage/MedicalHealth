@@ -1,6 +1,7 @@
 package com.zrf.controller.statistics;
 
 import cn.hutool.core.date.DateUtil;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.zrf.controller.BaseController;
 import com.zrf.domain.Workload;
 import com.zrf.domain.WorkloadStat;
@@ -31,6 +32,7 @@ public class StatWorkloadController extends BaseController {
      * 医生工作量统计列表
      */
     @GetMapping("queryWorkload")
+    @HystrixCommand
     public AjaxResult queryWorkload(WorkloadQueryDto workloadQueryDto){
         if(workloadQueryDto.getBeginTime()==null){
             workloadQueryDto.setQueryDate(DateUtil.format(DateUtil.date(),"yyyy-MM-dd"));
@@ -44,6 +46,7 @@ public class StatWorkloadController extends BaseController {
      * 总体工作量统计列表
      */
     @GetMapping("queryWorkloadStat")
+    @HystrixCommand
     public AjaxResult queryWorkloadStat(WorkloadQueryDto workloadQueryDto){
         if(workloadQueryDto.getBeginTime()==null){
             workloadQueryDto.setQueryDate(DateUtil.format(DateUtil.date(),"yyyy-MM-dd"));

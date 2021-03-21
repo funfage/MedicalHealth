@@ -34,6 +34,11 @@ dubbo:
   application:
     name: medical-statistics-service
   registry:
-    address: zookeeper://www.zhowyunfat.cn:2181
+    address: zookeeper://127.0.0.1:2181 # 119.29.106.231
   consumer:
     check: false
+  config-center:
+    timeout: 10000
+  protocol:
+    name: dubbo
+    port: -1

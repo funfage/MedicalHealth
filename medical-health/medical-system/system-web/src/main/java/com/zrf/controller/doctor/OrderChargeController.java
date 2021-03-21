@@ -2,6 +2,8 @@ package com.zrf.controller.doctor;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.config.pay.AliPayConfig;
 import com.zrf.config.pay.PayService;
 import com.zrf.constants.Constants;
@@ -87,6 +89,8 @@ public class OrderChargeController extends BaseController {
      * 创建现金收费订单
      */
     @PostMapping("createOrderChargeWithCash")
+    @Log(title = "创建现金收费订单", businessType = BusinessType.OTHER)
+    @HystrixCommand
     public AjaxResult createOrderChargeWithCash(@RequestBody @Validated OrderChargeFormDto orderChargeFormDto) {
         // 保存订单信息
         // 现金支付
@@ -104,6 +108,8 @@ public class OrderChargeController extends BaseController {
      * 创建支付宝收费订单
      */
     @PostMapping("createOrderChargeWithZfb")
+    @Log(title = "创建支付宝收费订单", businessType = BusinessType.OTHER)
+    @HystrixCommand
     public AjaxResult createOrderChargeWithZfb(@RequestBody @Validated OrderChargeFormDto orderChargeFormDto) {
         // 保存订单信息
         // 支付宝支付
@@ -143,6 +149,7 @@ public class OrderChargeController extends BaseController {
      * 根据订单ID查询订单信息【验证是否支付成功】
      */
     @GetMapping("queryOrderChargeOrderId/{orderId}")
+    @HystrixCommand
     public AjaxResult queryOrderChargeOrderId(@PathVariable String orderId) {
         OrderCharge orderCharge = orderChargeService.queryOrderChargeByOrderId(orderId);
         if (null == orderCharge) {
@@ -155,6 +162,8 @@ public class OrderChargeController extends BaseController {
      * 根据订单id删除订单信息和详情信息
      */
     @DeleteMapping("deleteOrderChargeAndItemsByOrderId/{orderId}")
+    @Log(title = "根据订单id删除订单信息和详情信息", businessType = BusinessType.DELETE)
+    @HystrixCommand
     public AjaxResult deleteOrderChargeAndItemsByOrderId(@PathVariable String orderId) {
         orderChargeService.deleteOrderChargeAndItemsByOrderId(orderId);
         return AjaxResult.success();
@@ -164,6 +173,7 @@ public class OrderChargeController extends BaseController {
      * 分页查询所有收费单
      */
     @GetMapping("queryAllOrderChargeForPage")
+    @HystrixCommand
     public AjaxResult queryAllOrderChargeForPage(OrderChargeDto orderChargeDto) {
         DataGridView dataGridView = orderChargeService.queryAllOrderChargeForPage(orderChargeDto);
         return AjaxResult.success("查询成功", dataGridView.getData(), dataGridView.getTotal());
@@ -173,6 +183,7 @@ public class OrderChargeController extends BaseController {
      * 根据收费单的ID查询收费详情信息
      */
     @GetMapping("queryOrderChargeItemByOrderId/{orderId}")
+    @HystrixCommand
     public AjaxResult queryOrderChargeItemByOrderId(@PathVariable String orderId) {
         List<OrderChargeItem> list = orderChargeService.queryOrderChargeItemByOrderId(orderId);
         return AjaxResult.success(list);
@@ -198,6 +209,7 @@ public class OrderChargeController extends BaseController {
      * 订单列表里再次支付宝支付
      */
     @GetMapping("toPayOrderWithZfb/{orderId}")
+    @HystrixCommand
     public AjaxResult toPayOrderWithZfb(@PathVariable String orderId){
         OrderCharge orderCharge = orderChargeService.queryOrderChargeByOrderId(orderId);
         if (null == orderCharge) {

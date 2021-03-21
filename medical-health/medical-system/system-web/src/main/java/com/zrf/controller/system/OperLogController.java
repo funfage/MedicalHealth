@@ -1,5 +1,7 @@
 package com.zrf.controller.system;
 
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.dto.OperLogDto;
 import com.zrf.service.OperLogService;
 import com.zrf.vo.AjaxResult;
@@ -33,6 +35,7 @@ public class OperLogController {
      * 删除
      */
     @DeleteMapping("deleteOperLogByIds/{infoIds}")
+    @Log(title = "删除操作日志", businessType = BusinessType.DELETE)
     public AjaxResult deleteOperLogByIds(@PathVariable Long[] infoIds){
         return AjaxResult.toAjax(this.operLogService.deleteOperLogByIds(infoIds));
     }
@@ -41,6 +44,7 @@ public class OperLogController {
      * 清空删除
      */
     @DeleteMapping("clearAllOperLog")
+    @Log(title = "清空操作日志", businessType = BusinessType.DELETE)
     public AjaxResult clearAllOperLog(){
         return AjaxResult.toAjax(this.operLogService.clearAllOperLog());
     }

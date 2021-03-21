@@ -2,6 +2,8 @@ package com.zrf.controller.doctor;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.constants.Constants;
 import com.zrf.controller.BaseController;
 import com.zrf.domain.CareHistory;
@@ -78,6 +80,8 @@ public class HandleMedicineController extends BaseController {
      * 发药
      */
     @PostMapping("doMedicine")
+    @Log(title = "发药", businessType = BusinessType.OTHER)
+    @HystrixCommand
     public AjaxResult doMedicine(@RequestBody List<String> itemIds) {
         if (itemIds == null || itemIds.isEmpty()) {
             return AjaxResult.fail("请选择要发药的药品项");

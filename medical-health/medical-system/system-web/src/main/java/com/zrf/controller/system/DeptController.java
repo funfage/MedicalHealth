@@ -57,7 +57,7 @@ public class DeptController {
      * 添加
      */
     @PostMapping("addDept")
-    @Log(title = "科室管理", businessType = BusinessType.INSERT)
+    @Log(title = "添加科室", businessType = BusinessType.INSERT)
     public AjaxResult addDept(@Validated DeptDto deptDto) {
         deptDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.deptService.addDept(deptDto));
@@ -66,8 +66,8 @@ public class DeptController {
     /**
      * 修改
      */
-    @Log(title = "科室管理", businessType = BusinessType.UPDATE)
     @PutMapping("updateDept")
+    @Log(title = "修改科室", businessType = BusinessType.UPDATE)
     public AjaxResult updateDept(@Validated DeptDto deptDto) {
         deptDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.deptService.updateDept(deptDto));
@@ -76,8 +76,8 @@ public class DeptController {
     /**
      * 删除
      */
-    @Log(title = "科室管理", businessType = BusinessType.DELETE)
     @DeleteMapping("deleteDeptByIds/{deptIds}")
+    @Log(title = "删除科室", businessType = BusinessType.DELETE)
     public AjaxResult delete(@PathVariable @Validated @NotEmpty(message = "科室ID为空") Long[] deptIds) {
         return AjaxResult.toAjax(this.deptService.deleteDeptByIds(deptIds));
     }

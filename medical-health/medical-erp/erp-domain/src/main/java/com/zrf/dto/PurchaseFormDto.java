@@ -12,7 +12,7 @@ import java.util.List;
  * @author 张润发
  * @date 2021/2/26
  */
-@ApiModel(value="com-zrf-dto-PurchaseFromDto")
+@ApiModel(value="com-zrf-dto-PurchaseFormDto")
 @Data
 @EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor

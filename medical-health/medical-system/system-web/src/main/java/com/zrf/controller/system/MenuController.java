@@ -1,5 +1,7 @@
 package com.zrf.controller.system;
 
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.constants.Constants;
 import com.zrf.domain.Menu;
 import com.zrf.domain.MenuDto;
@@ -47,6 +49,7 @@ public class MenuController {
      * 添加菜单
      */
     @PostMapping("addMenu")
+    @Log(title = "添加菜单", businessType = BusinessType.INSERT)
     public AjaxResult addMenu(@Validated MenuDto menuDto) {
         menuDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.menuService.addMenu(menuDto));
@@ -56,6 +59,7 @@ public class MenuController {
      * 修改菜单
      */
     @PutMapping("updateMenu")
+    @Log(title = "修改菜单", businessType = BusinessType.UPDATE)
     public AjaxResult updateMenu(@Validated MenuDto menuDto) {
         menuDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.menuService.updateMenu(menuDto));
@@ -74,6 +78,7 @@ public class MenuController {
      * 根据菜单ID删除
      */
     @DeleteMapping("deleteMenuById/{menuId}")
+    @Log(title = "删除菜单", businessType = BusinessType.DELETE)
     public AjaxResult deleteMenuById(@PathVariable Long menuId) {
         //删除之前要判断当前菜单有没有子节点
         if (this.menuService.hasChildByMenuId(menuId)) {

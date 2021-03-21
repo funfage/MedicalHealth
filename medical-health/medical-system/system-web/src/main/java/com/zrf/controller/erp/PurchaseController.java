@@ -164,6 +164,7 @@ public class PurchaseController extends BaseController {
      */
     @PostMapping("addPurchaseToAudit")
     @Log(title = "采购单管理--添加并提交审核采购单位和详情数据", businessType = BusinessType.INSERT)
+    @HystrixCommand
     public AjaxResult addPurchaseToAudit(@RequestBody PurchaseFormDto purchaseFormDto) {
         //判断当前采购单的状态
         if (!checkPurchase(purchaseFormDto)) {
@@ -196,6 +197,7 @@ public class PurchaseController extends BaseController {
      * 根据采购单号查询采购单信息和详情信息
      */
     @GetMapping("queryPurchaseAndItemByPurchaseId/{purchaseId}")
+    @HystrixCommand
     public AjaxResult queryPurchaseAndItemByPurchaseId(@PathVariable String purchaseId) {
         Purchase purchase = purchaseService.getPurchaseById(purchaseId);
         if (null == purchase) {

@@ -41,8 +41,8 @@ public class ProviderController extends BaseController {
      * 添加
      */
     @PostMapping("addProvider")
-    @HystrixCommand
     @Log(title = "添加供应商", businessType = BusinessType.INSERT)
+    @HystrixCommand
     public AjaxResult addProvider(@Validated ProviderDto providerDto) {
         providerDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.providerService.addProvider(providerDto));
@@ -52,8 +52,8 @@ public class ProviderController extends BaseController {
      * 修改
      */
     @PutMapping("updateProvider")
-    @HystrixCommand
     @Log(title = "修改供应商", businessType = BusinessType.UPDATE)
+    @HystrixCommand
     public AjaxResult updateProvider(@Validated ProviderDto providerDto) {
         providerDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.providerService.updateProvider(providerDto));
@@ -73,8 +73,8 @@ public class ProviderController extends BaseController {
      * 删除
      */
     @DeleteMapping("deleteProviderByIds/{providerIds}")
-    @HystrixCommand
     @Log(title = "删除供应商", businessType = BusinessType.DELETE)
+    @HystrixCommand
     public AjaxResult deleteProviderByIds(@PathVariable @Validated @NotEmpty(message = "要删除的ID不能为空") Long[] providerIds) {
         return AjaxResult.toAjax(this.providerService.deleteProviderByIds(providerIds));
     }
@@ -82,8 +82,8 @@ public class ProviderController extends BaseController {
     /**
      * 查询所有可用的供应商
      */
-    @HystrixCommand
     @GetMapping("selectAllProvider")
+    @HystrixCommand
     public AjaxResult selectAllProvider() {
         return AjaxResult.success(this.providerService.selectAllProvider());
     }

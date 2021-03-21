@@ -1,5 +1,7 @@
 package com.zrf.controller.system;
 
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.domain.Role;
 import com.zrf.dto.RoleDto;
 import com.zrf.service.MenuService;
@@ -55,6 +57,7 @@ public class RoleController {
      * 添加
      */
     @PostMapping("addRole")
+    @Log(title = "添加角色", businessType = BusinessType.INSERT)
     public AjaxResult addRole(@Validated RoleDto roleDto) {
         roleDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.roleService.addRole(roleDto));
@@ -64,6 +67,7 @@ public class RoleController {
      * 修改
      */
     @PutMapping("updateRole")
+    @Log(title = "修改角色", businessType = BusinessType.UPDATE)
     public AjaxResult updateRole(@Validated RoleDto roleDto) {
         roleDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.roleService.updateRole(roleDto));
@@ -73,6 +77,7 @@ public class RoleController {
      * 删除
      */
     @DeleteMapping("deleteRoleByIds/{roleIds}")
+    @Log(title = "删除角色", businessType = BusinessType.DELETE)
     public AjaxResult deleteRoleByIds(@PathVariable Long[] roleIds) {
         return AjaxResult.toAjax(this.roleService.deleteRoleByIds(roleIds));
     }
@@ -81,6 +86,7 @@ public class RoleController {
      * 保存角色和菜单之间的关系
      */
     @PostMapping("saveRoleMenu/{roleId}/{menuIds}")
+    @Log(title = "添加角色菜单", businessType = BusinessType.INSERT)
     public AjaxResult saveRoleMenu(@PathVariable Long roleId, @PathVariable Long[] menuIds) {
         /**
          * 因为我们用的路径参数，前端可能传过来的menuIds是一个空的，但是为空的话无法匹配上面的路径

@@ -34,6 +34,6 @@ dubbo:
   application:
     name: medical-doctor-service
   registry:
-    address: zookeeper://www.zhowyunfat.cn:2181
+    address: zookeeper://127.0.0.1:2181
   consumer:
     check: false

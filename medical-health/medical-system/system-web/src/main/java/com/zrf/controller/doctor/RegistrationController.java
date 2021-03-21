@@ -2,6 +2,8 @@ package com.zrf.controller.doctor;
 
 import cn.hutool.core.date.DateUtil;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.constants.Constants;
 import com.zrf.controller.BaseController;
 import com.zrf.domain.Dept;
@@ -88,7 +90,8 @@ public class RegistrationController extends BaseController {
      * 如果患者ID为空，则先添加患者信息
      */
     @PostMapping("addRegistration")
-//    @HystrixCommand
+    @Log(title = "添加挂号信息", businessType = BusinessType.INSERT)
+    @HystrixCommand
     public AjaxResult addRegistration(@RequestBody @Validated RegistrationFormDto registrationFormDto) {
         PatientDto patientDto = registrationFormDto.getPatientDto();
         RegistrationDto registrationDto = registrationFormDto.getRegistrationDto();
@@ -141,7 +144,8 @@ public class RegistrationController extends BaseController {
      * @return
      */
     @PostMapping("collectFee/{registrationId}")
-//    @HystrixCommand
+    @Log(title = "挂号收费", businessType = BusinessType.OTHER)
+    @HystrixCommand
     public AjaxResult collectFee(@PathVariable String registrationId) {
         Registration registration = registrationService.queryRegistrationByRegId(registrationId);
         if (null == registration) {
@@ -158,7 +162,8 @@ public class RegistrationController extends BaseController {
      * 作废
      */
     @PostMapping("doInvalid/{regId}")
-//    @HystrixCommand
+    @Log(title = "挂号作废", businessType = BusinessType.OTHER)
+    @HystrixCommand
     public AjaxResult doInvalid(@PathVariable String regId){
         // 根据id查询挂号单信息并判断挂号信息是否存在
         Registration registration = registrationService.queryRegistrationByRegId(regId);
@@ -178,7 +183,8 @@ public class RegistrationController extends BaseController {
      * 退费
      */
     @PostMapping("doReturn/{regId}")
-//    @HystrixCommand
+    @Log(title = "挂号退费", businessType = BusinessType.OTHER)
+    @HystrixCommand
     public AjaxResult doReturn(@PathVariable String regId){
         // 根据id查询挂号单信息并判断挂号信息是否存在
         Registration registration = registrationService.queryRegistrationByRegId(regId);

@@ -1,6 +1,7 @@
 package com.zrf.controller.statistics;
 
 import cn.hutool.core.date.DateUtil;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.zrf.constants.Constants;
 import com.zrf.controller.BaseController;
 import com.zrf.dto.RevenueQueryDto;
@@ -64,6 +65,7 @@ public class RevenueController extends BaseController {
      *       }
      */
     @GetMapping("queryAllRevenueData")
+    @HystrixCommand
     public AjaxResult queryAllRevenueData(RevenueQueryDto revenueQueryDto){
         // 如果没有开始日期和结束日期就查询当天
         if (revenueQueryDto.getBeginTime() == null) {

@@ -1,6 +1,7 @@
 package com.zrf.controller.doctor;
 
 import cn.hutool.core.date.DateUtil;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.zrf.constants.Constants;
 import com.zrf.controller.BaseController;
 import com.zrf.domain.Drug;
@@ -30,6 +31,7 @@ public class StatDrugController extends BaseController {
      * 查询发药统计列表
      */
     @GetMapping("queryDrug")
+    @HystrixCommand
     public AjaxResult queryDrug(DrugQueryDto drugQueryDto) {
         // 如果查询日期为空则默认查询当天日期
         if (drugQueryDto.getBeginTime() == null) {
@@ -43,6 +45,7 @@ public class StatDrugController extends BaseController {
      * 查询发药数量统计列表
      */
     @GetMapping("queryDrugStat")
+    @HystrixCommand
     public AjaxResult queryDrugStat(DrugQueryDto drugQueryDto) {
         // 如果查询日期为空则默认查询当天日期
         if (drugQueryDto.getBeginTime() == null) {

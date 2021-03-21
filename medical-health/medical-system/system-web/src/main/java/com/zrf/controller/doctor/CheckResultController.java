@@ -2,6 +2,8 @@ package com.zrf.controller.doctor;
 
 import cn.hutool.core.date.DateUtil;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.constants.Constants;
 import com.zrf.controller.BaseController;
 import com.zrf.domain.CareHistory;
@@ -43,6 +45,8 @@ public class CheckResultController extends BaseController {
      * 根据挂号ID查询已支付的检查处方信息及详情
      */
     @PostMapping("queryNeedCheckItem")
+    @Log(title = "根据挂号ID查询已支付的检查处方信息及详情", businessType = BusinessType.INSERT)
+    @HystrixCommand
     public AjaxResult queryNeedCheckItem(@RequestBody CheckResultDto checkResultDto) {
         List<CareOrderItem> res = new ArrayList<>();
         // 只查询挂号单支付的检查项目
@@ -84,6 +88,7 @@ public class CheckResultController extends BaseController {
      * 根据检查单号查询要检查的项目详情
      */
     @GetMapping("queryCheckItemByItemId/{itemId}")
+    @HystrixCommand
     public AjaxResult queryCheckItemByItemId(@PathVariable String itemId) {
         CareOrderItem careOrderItem = careService.queryCareOrderItemByItemId(itemId);
         // 判断检查单号的数据是否存在
@@ -111,6 +116,8 @@ public class CheckResultController extends BaseController {
      * 开始检查
      */
     @PostMapping("startCheck/{itemId}")
+    @Log(title = "开始检查", businessType = BusinessType.OTHER)
+    @HystrixCommand
     public AjaxResult startCheck(@PathVariable String itemId) {
         CareOrderItem careOrderItem = careService.queryCareOrderItemByItemId(itemId);
         if (careOrderItem == null) {
@@ -143,6 +150,7 @@ public class CheckResultController extends BaseController {
      * 分页查询所有检查中的项目
      */
     @PostMapping("queryAllCheckingResultForPage")
+    @HystrixCommand
     public AjaxResult queryAllCheckingResultForPage(@RequestBody CheckResultDto checkResultDto){
         //检查中的
         checkResultDto.setResultStatus(Constants.RESULT_STATUS_0);
@@ -154,6 +162,7 @@ public class CheckResultController extends BaseController {
      * 上传检查结果并完成检查
      */
     @PostMapping("completeCheckResult")
+    @HystrixCommand
     public AjaxResult completeCheckResult(@RequestBody @Validated CheckResultFormDto checkResultFormDto){
         checkResultFormDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(checkResultService.completeCheckResult(checkResultFormDto));
@@ -163,6 +172,7 @@ public class CheckResultController extends BaseController {
      * 查询所有检查中的和检查完成了的项目
      */
     @PostMapping("queryAllCheckResultForPage")
+    @HystrixCommand
     public AjaxResult queryAllCheckResultForPage(@RequestBody CheckResultDto checkResultDto){
         DataGridView dataGridView=checkResultService.queryAllCheckResultForPage(checkResultDto);
         return AjaxResult.success("查询成功",dataGridView.getData(),dataGridView.getTotal());

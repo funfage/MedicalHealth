@@ -16,7 +16,7 @@ import java.util.Date;
  * @author 张润发
  * @date 2021/2/25
  */
-@ApiModel(value="com-bjsxt-dto-PurchaseDto")
+@ApiModel(value="com-zrf-dto-PurchaseDto")
 @Data
 @EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor

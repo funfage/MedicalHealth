@@ -3,6 +3,7 @@ package com.zrf.dto;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @ApiModel(value="com-zrf-dto-OrderChargeDto")
 @Data
+@EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderChargeFormDto extends BaseDto {

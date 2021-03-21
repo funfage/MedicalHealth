@@ -2,6 +2,8 @@ package com.zrf.controller.doctor;
 
 import cn.hutool.core.date.DateUtil;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.constants.Constants;
 import com.zrf.controller.BaseController;
 import com.zrf.domain.*;
@@ -50,6 +52,7 @@ public class CareController extends BaseController {
      * GET/doctor/care/queryToBeSeenRegistration/{scheudlingType}
      */
     @GetMapping("queryToBeSeenRegistration/{schedulingType}")
+    @HystrixCommand
     public AjaxResult queryToBeSeenRegistration(@PathVariable String schedulingType) {
         // 得到当前用户的部门id
         Long deptId = ShiroSecurityUtils.getCurrentUser().getDeptId();
@@ -65,6 +68,7 @@ public class CareController extends BaseController {
      * GET/doctor/care/queryVisitingRegistration/{scheudlingType}
      */
     @GetMapping("queryVisitingRegistration/{scheudlingType}")
+    @HystrixCommand
     public AjaxResult queryVisitingRegistration(@PathVariable String scheudlingType) {
         //得到当前用户的部门ID
         Long deptId = ShiroSecurityUtils.getCurrentUser().getDeptId();
@@ -81,6 +85,7 @@ public class CareController extends BaseController {
      * GET/doctor/care/queryVisitCompletedRegistration/{scheudlingType}
      */
     @GetMapping("queryVisitCompletedRegistration/{schedulingType}")
+    @HystrixCommand
     public AjaxResult queryVisitCompletedRegistration(@PathVariable String schedulingType) {
         //得到当前用户的部门ID
         Long deptId = ShiroSecurityUtils.getCurrentUser().getDeptId();
@@ -97,6 +102,8 @@ public class CareController extends BaseController {
      * POST/doctor/care/receivePatient/{regId}
      */
     @PostMapping("receivePatient/{regId}")
+    @Log(title = "接诊", businessType = BusinessType.INSERT)
+    @HystrixCommand
     public AjaxResult receivePatient(@PathVariable String regId) {
         // 防止并发就诊问题
         synchronized (this) {
@@ -122,6 +129,7 @@ public class CareController extends BaseController {
      * GET/doctor/care/getPatientAllMessageByPatientId/{patientId}
      */
     @GetMapping("getPatientAllMessageByPatientId/{patientId}")
+    @HystrixCommand
     public AjaxResult getPatientAllMessageByPatientId(@PathVariable String patientId) {
         //查询患者信息
         Patient patient = patientService.getPatientById(patientId);
@@ -140,6 +148,8 @@ public class CareController extends BaseController {
      * 保存病例信息
      */
     @PostMapping("saveCareHistory")
+    @Log(title = "保存病例信息", businessType = BusinessType.INSERT)
+    @HystrixCommand
     public AjaxResult saveCareHistory(@RequestBody CareHistoryDto careHistoryDto) {
         // 设置接诊的医生信息
         careHistoryDto.setUserId(ShiroSecurityUtils.getCurrentUser().getUserId());
@@ -157,7 +167,7 @@ public class CareController extends BaseController {
      * 根据挂号单位ID查询对应的病历信息
      */
     @GetMapping("getCareHistoryByRegId/{regId}")
-//    @HystrixCommand
+    @HystrixCommand
     public AjaxResult getCareHistoryByRegId(@PathVariable String regId) {
         CareHistory careHistory = careService.queryCareHistoryByRegId(regId);
         return AjaxResult.success(careHistory);
@@ -167,7 +177,7 @@ public class CareController extends BaseController {
      * 根据病历ID查询处方信息及详情信息
      */
     @GetMapping("queryCareOrdersByChId/{chId}")
-//    @HystrixCommand
+    @HystrixCommand
     public AjaxResult queryCareOrdersByChId(@PathVariable String chId) {
         // 根据病历id查询所有的处方信息
         List<CareOrder> careOrders = careService.queryCareOrdersByChId(chId);
@@ -187,7 +197,8 @@ public class CareController extends BaseController {
      * 保存处方及详情信息
      */
     @PostMapping("saveCareOrderItem")
-//    @HystrixCommand
+    @Log(title = "保存处方及详情信息", businessType = BusinessType.INSERT)
+    @HystrixCommand
     public AjaxResult saveCareOrderItem(@RequestBody @Validated CareOrderFormDto careOrderFormDto) {
         // 查询病例信息是否保存
         CareHistory careHistory = careService.queryCareHistoryByChId(careOrderFormDto.getCareOrder().getChId());
@@ -209,7 +220,8 @@ public class CareController extends BaseController {
      * 根据处方详情ID删除处方详情【只能删除未支付的】
      */
     @DeleteMapping("deleteCareOrderItemById/{itemId}")
-//    @HystrixCommand
+    @Log(title = "根据处方详情ID删除处方详情【只能删除未支付的】", businessType = BusinessType.DELETE)
+    @HystrixCommand
     public AjaxResult deleteCareOrderItemById(@PathVariable String itemId) {
         // 判断处方详情是否保存
         CareOrderItem careOrderItem = careService.queryCareOrderItemByItemId(itemId);
@@ -227,7 +239,8 @@ public class CareController extends BaseController {
      *完成就诊
      */
     @PostMapping("visitComplete/{regId}")
-//    @HystrixCommand
+    @Log(title = "完成就诊", businessType = BusinessType.INSERT)
+    @HystrixCommand
     public AjaxResult visitComplete(@PathVariable String regId){
         // 判断挂号单是否存在
         Registration registration = registrationService.queryRegistrationByRegId(regId);

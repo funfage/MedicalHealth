@@ -2,6 +2,8 @@ package com.zrf.controller.doctor;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.config.pay.AliPayConfig;
 import com.zrf.config.pay.PayService;
 import com.zrf.constants.Constants;
@@ -90,6 +92,8 @@ public class OrderBackfeeController extends BaseController {
      * 创建现金退费订单
      */
     @PostMapping("createOrderBackfeeWithCash")
+    @Log(title = "创建现金退费订单", businessType = BusinessType.OTHER)
+    @HystrixCommand
     public AjaxResult createOrderBackfeeWithCash(@RequestBody @Validated OrderBackfeeFormDto orderBackfeeFormDto) {
         // 保存现金退费订单信息
         orderBackfeeFormDto.getOrderBackfeeDto().setBackType(Constants.PAY_TYPE_0);
@@ -117,6 +121,8 @@ public class OrderBackfeeController extends BaseController {
      * 创建支付宝退费订单
      */
     @PostMapping("createOrderBackfeeWithZfb")
+    @Log(title = "创建支付宝退费订单", businessType = BusinessType.OTHER)
+    @HystrixCommand
     public AjaxResult createOrderBackfeeWithZfb(@RequestBody @Validated OrderBackfeeFormDto orderBackfeeFormDto) {
         // 保存现金退费订单信息
         orderBackfeeFormDto.getOrderBackfeeDto().setBackType(Constants.PAY_TYPE_0);

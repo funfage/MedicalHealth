@@ -85,6 +85,7 @@ public class UserController {
      * 重置密码
      */
     @PostMapping("resetPwd/{userIds}")
+    @Log(title = "重置密码", businessType = BusinessType.OTHER)
     public AjaxResult resetPwd(@PathVariable Long[] userIds){
         if(userIds.length>0){
             this.userService.resetPassWord(userIds);

@@ -77,8 +77,8 @@ public class MedicinesController extends BaseController {
     /**
      * 查询所有可用的药品信息
      */
-    @HystrixCommand
     @GetMapping("selectAllMedicines")
+    @HystrixCommand
     public AjaxResult selectAllMedicines() {
         return AjaxResult.success(medicinesService.selectAllMedicines());
     }
@@ -86,9 +86,9 @@ public class MedicinesController extends BaseController {
     /**
      * 调整库存
      */
-    @HystrixCommand
-    @Log(title = "调整药品库存信息",businessType = BusinessType.UPDATE)
     @PostMapping("updateMedicinesStorage/{medicinesId}/{medicinesStockNum}")
+    @Log(title = "调整药品库存信息",businessType = BusinessType.UPDATE)
+    @HystrixCommand
     public AjaxResult updateMedicinesStorage(@PathVariable Long medicinesId,@PathVariable Long medicinesStockNum){
         int i = medicinesService.updateMedicinesStorage(medicinesId, medicinesStockNum);
         return AjaxResult.toAjax(i);

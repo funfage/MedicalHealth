@@ -1,6 +1,8 @@
 package com.zrf.controller.system;
 
 import cn.hutool.core.date.DateUtil;
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.constants.Constants;
 import com.zrf.constants.HttpStatus;
 import com.zrf.domain.LoginInfo;
@@ -55,6 +57,7 @@ public class LoginController {
      * @return
      */
     @PostMapping("login/doLogin")
+    @Log(title = "用户登录", businessType = BusinessType.OTHER)
     public AjaxResult login(@RequestBody @Validated LoginBodyDto loginBodyDto, HttpServletRequest request) {
         AjaxResult result = AjaxResult.success();
         String username = loginBodyDto.getUsername();

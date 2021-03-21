@@ -3,6 +3,8 @@ package com.zrf.controller.doctor;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.constants.Constants;
 import com.zrf.controller.BaseController;
 import com.zrf.domain.Scheduling;
@@ -40,6 +42,7 @@ public class SchedulingController extends BaseController {
      * 如果部门ID为空，那么查询所有要排班的用户信息
      */
     @GetMapping("queryUsersNeedScheduling")
+    @HystrixCommand
     public AjaxResult queryUsersNeedScheduling(Long deptId) {
         List<User> users = this.userService.querySchedulingUsers(null, deptId);
         return AjaxResult.success(users);
@@ -71,6 +74,7 @@ public class SchedulingController extends BaseController {
      * 保存排班数据
      */
     @PostMapping("saveScheduling")
+    @Log(title = "保存排班数据", businessType = BusinessType.INSERT)
     @HystrixCommand
     public AjaxResult saveScheduling(@RequestBody SchedulingFormDto schedulingFormDto){
         schedulingFormDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());

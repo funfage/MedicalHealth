@@ -1,6 +1,7 @@
 package com.zrf.controller.statistics;
 
 import cn.hutool.core.date.DateUtil;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.zrf.controller.BaseController;
 import com.zrf.dto.CheckQueryDto;
 import com.zrf.service.CheckService;
@@ -25,6 +26,7 @@ public class StatCheckController extends BaseController {
      * 查询检查项目列表
      */
     @GetMapping("queryCheck")
+    @HystrixCommand
     public AjaxResult queryCheck(CheckQueryDto checkQueryDto){
         if(checkQueryDto.getBeginTime()==null){
             checkQueryDto.setQueryDate(DateUtil.format(DateUtil.date(),"yyyy-MM-dd"));
@@ -36,6 +38,7 @@ public class StatCheckController extends BaseController {
      * 查询检查项目列表
      */
     @GetMapping("queryCheckStat")
+    @HystrixCommand
     public AjaxResult queryCheckStat(CheckQueryDto checkQueryDto){
         if(checkQueryDto.getBeginTime()==null){
             checkQueryDto.setQueryDate(DateUtil.format(DateUtil.date(),"yyyy-MM-dd"));

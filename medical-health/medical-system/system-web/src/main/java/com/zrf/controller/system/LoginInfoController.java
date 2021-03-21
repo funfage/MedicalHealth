@@ -1,5 +1,7 @@
 package com.zrf.controller.system;
 
+import com.zrf.aspectj.annotation.Log;
+import com.zrf.aspectj.enums.BusinessType;
 import com.zrf.dto.LoginInfoDto;
 import com.zrf.service.LoginInfoService;
 import com.zrf.vo.AjaxResult;
@@ -33,6 +35,7 @@ public class LoginInfoController {
      * 删除
      */
     @DeleteMapping("deleteLoginInfoByIds/{infoIds}")
+    @Log(title = "删除登录日志", businessType = BusinessType.DELETE)
     public AjaxResult deleteLoginInfoByIds(@PathVariable Long[] infoIds){
         return AjaxResult.toAjax(loginInfoService.deleteLoginInfoByIds(infoIds));
     }
@@ -40,6 +43,7 @@ public class LoginInfoController {
      * 清空删除
      */
     @DeleteMapping("clearLoginInfo")
+    @Log(title = "清空登录日志", businessType = BusinessType.DELETE)
     public AjaxResult clearLoginInfo(){
         return AjaxResult.toAjax(loginInfoService.clearLoginInfo());
     }
