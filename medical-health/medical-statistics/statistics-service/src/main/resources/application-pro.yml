@@ -3,7 +3,7 @@ spring:
   #数据源的配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/medical-health?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://zhowyunfat.cn:3306/medical-health?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: TXyunMsq@rt031219..
     #注入数据源的类型   默认的为HikariDataSource
@@ -34,7 +34,7 @@ dubbo:
   application:
     name: medical-statistics-service
   registry:
-    address: zookeeper://127.0.0.1:2181 # 119.29.106.231
+    address: zookeeper://zhowyunfat.cn:2181 # 119.29.106.231
   consumer:
     check: false
   config-center:
